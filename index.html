@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA/QC Engineer — Emad Abosuliman</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0D1B2A;--navy2:#1B3A6B;--blue:#1A56DB;--blue2:#1E429F;
+  --blue-light:#EBF5FF;--blue-border:#93C5FD;
+  --green:#057A55;--green-light:#DEF7EC;--green-border:#6EE7B7;
+  --yellow:#92400E;--yellow-light:#FEF3C7;--yellow-border:#FCD34D;
+  --red:#9B1C1C;--red-light:#FDE8E8;--red-border:#FCA5A5;
+  --orange:#C2410C;--orange-light:#FFF7ED;--orange-border:#FDBA74;
+  --purple:#5B21B6;--purple-light:#F5F3FF;--purple-border:#C4B5FD;
+  --lblue:#075985;--lblue-light:#E0F2FE;--lblue-border:#7DD3FC;
+  --bg:#F8FAFC;--surface:#FFFFFF;--surface2:#F1F5F9;
+  --border:#E2E8F0;--border2:#CBD5E1;
+  --text:#0F172A;--text2:#475569;--text3:#94A3B8;
+  --radius:10px;--radius-sm:6px;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh;}
+a{color:var(--blue);}
+.app{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+/* TOPBAR */
+.topbar{background:var(--navy);color:#fff;padding:0 20px;height:54px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.tb-brand{display:flex;align-items:center;gap:10px;}
+.tb-logo{width:30px;height:30px;background:rgba(255,255,255,0.12);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.tb-name{font-size:14px;font-weight:600;}
+.tb-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px;}
+.tb-right{display:flex;align-items:center;gap:8px;}
+.tb-date{font-size:11px;color:rgba(255,255,255,0.5);font-family:'JetBrains Mono',monospace;}
+.tb-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);color:#fff;padding:4px 11px;border-radius:5px;cursor:pointer;font-size:11px;transition:background 0.15s;}
+.tb-btn:hover{background:rgba(255,255,255,0.18);}
+.tb-btn-ghost{background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:11px;padding:4px 8px;}
+#import-file{display:none;}
+/* BODY */
+.body{display:flex;flex:1;overflow:hidden;}
+/* SIDEBAR */
+.sidebar{width:195px;background:var(--surface);border-right:1px solid var(--border);flex-shrink:0;padding:10px 8px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;}
+.nav-sec{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;padding:10px 10px 4px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:13px;color:var(--text2);border:none;background:none;width:100%;text-align:left;transition:all 0.15s;}
+.nav-item:hover{background:var(--surface2);color:var(--text);}
+.nav-item.active{background:var(--navy);color:#fff;}
+.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:var(--red-light);color:var(--red);font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600;}
+.nav-thu{margin-left:auto;background:var(--yellow-light);color:var(--yellow);font-size:9px;padding:1px 5px;border-radius:10px;font-weight:600;}
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:18px 20px;}
+.panel{display:none;}
+.panel.active{display:block;}
+/* TYPOGRAPHY */
+.pg-title{font-size:17px;font-weight:600;margin-bottom:2px;}
+.pg-sub{font-size:13px;color:var(--text2);margin-bottom:18px;}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px;margin-bottom:13px;box-shadow:var(--shadow);}
+.card-title{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+/* STAT */
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 11px;text-align:center;box-shadow:var(--shadow);}
+.stat-link{cursor:pointer;transition:all 0.15s;}
+.stat-link:hover{border-color:var(--blue);background:var(--blue-light);transform:translateY(-1px);box-shadow:0 4px 10px rgba(26,86,219,0.12);}
+.stat-hint{font-size:9px;color:var(--text3);margin-top:3px;opacity:0;transition:opacity 0.15s;}
+.stat-link:hover .stat-hint{opacity:1;}
+.stat-val{font-size:24px;font-weight:600;font-family:'JetBrains Mono',monospace;line-height:1.1;}
+.stat-label{font-size:11px;color:var(--text2);margin-top:3px;}
+.c-blue{color:var(--blue);}.c-green{color:var(--green);}.c-yellow{color:#B45309;}.c-red{color:var(--red);}.c-navy{color:var(--navy);}.c-lblue{color:var(--lblue);}.c-orange{color:var(--orange);}.c-purple{color:var(--purple);}
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;}
+.b-blue{background:var(--blue-light);color:var(--blue2);border:1px solid var(--blue-border);}
+.b-green{background:var(--green-light);color:var(--green);border:1px solid var(--green-border);}
+.b-yellow{background:var(--yellow-light);color:var(--yellow);border:1px solid var(--yellow-border);}
+.b-red{background:var(--red-light);color:var(--red);border:1px solid var(--red-border);}
+.b-navy{background:var(--navy);color:#fff;}
+.b-lblue{background:var(--lblue-light);color:var(--lblue);border:1px solid var(--lblue-border);}
+.b-gray{background:var(--surface2);color:var(--text2);border:1px solid var(--border2);}
+.b-orange{background:var(--orange-light);color:var(--orange);border:1px solid var(--orange-border);}
+.b-purple{background:var(--purple-light);color:var(--purple);border:1px solid var(--purple-border);}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:'Inter',sans-serif;transition:all 0.15s;white-space:nowrap;}
+.btn:hover{background:var(--surface2);}
+.btn-primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-primary:hover{background:var(--navy2);}
+.btn-blue{background:var(--blue-light);color:var(--blue2);border-color:var(--blue-border);}
+.btn-green{background:var(--green-light);color:var(--green);border-color:var(--green-border);}
+.btn-yellow{background:var(--yellow-light);color:var(--yellow);border-color:var(--yellow-border);}
+.btn-red{background:var(--red-light);color:var(--red);border-color:var(--red-border);}
+.btn-orange{background:var(--orange-light);color:var(--orange);border-color:var(--orange-border);}
+.btn-purple{background:var(--purple-light);color:var(--purple);border-color:var(--purple-border);}
+.btn-wa{background:#25D366;color:#fff;border-color:#25D366;}
+.btn-sm{padding:4px 10px;font-size:12px;}
+.btn-xs{padding:3px 8px;font-size:11px;}
+.btn-group{display:flex;gap:7px;flex-wrap:wrap;}
+/* FORMS */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;}
+.ff{margin-bottom:10px;}
+label{font-size:12px;font-weight:500;color:var(--text2);display:block;margin-bottom:3px;}
+input,select,textarea{width:100%;padding:7px 10px;border:1px solid var(--border2);border-radius:var(--radius-sm);font-size:13px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);transition:border 0.15s;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,0.08);}
+textarea{resize:vertical;min-height:65px;}
+/* TABLES */
+.tw{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--surface2);color:var(--text2);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.4px;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#FAFBFC;}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,0.4);z-index:200;align-items:center;justify-content:center;padding:16px;}
+.overlay.open{display:flex;}
+.modal{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:20px;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.15);}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.modal-title{font-size:15px;font-weight:600;}
+/* TASKS */
+.task-item{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;}
+.task-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.dot-high{background:var(--red);}.dot-med{background:#F59E0B;}.dot-low{background:var(--green);}
+.task-chk{width:17px;height:17px;border:1.5px solid var(--border2);border-radius:4px;cursor:pointer;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:10px;}
+.task-chk.done{background:var(--green);border-color:var(--green);color:#fff;}
+.task-body{flex:1;}
+.task-txt{font-size:13px;}
+.task-txt.striked{text-decoration:line-through;color:var(--text3);}
+.task-meta{font-size:11px;color:var(--text3);margin-top:2px;}
+.task-overdue{font-size:10px;color:var(--red);font-weight:600;}
+/* TIP */
+.tip-card{border-radius:var(--radius);padding:13px 15px;margin-bottom:14px;border:1px solid var(--border);}
+.tip-row{display:flex;gap:10px;align-items:flex-start;}
+.tip-icon{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.tip-cat{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.7px;margin-bottom:3px;}
+.tip-txt{font-size:13px;color:var(--text2);line-height:1.6;}
+.tip-cats{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tip-cat-btn{padding:4px 11px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;font-size:12px;transition:all 0.15s;}
+.tip-cat-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+/* NCR AGE */
+.age-ok{color:var(--green);font-weight:600;font-size:12px;}
+.age-warn{color:#B45309;font-weight:600;font-size:12px;}
+.age-over{color:var(--red);font-weight:600;font-size:12px;}
+/* CHAT */
+.chat-wrap{max-height:380px;overflow-y:auto;padding:2px 0;margin-bottom:11px;}
+.chat-msg{padding:10px 13px;border-radius:8px;font-size:13px;line-height:1.65;margin-bottom:7px;}
+.msg-sys{background:var(--blue-light);border-left:3px solid var(--blue);color:#1E3A8A;}
+.msg-user{background:var(--surface2);border-left:3px solid var(--border2);}
+.msg-ai{background:var(--green-light);border-left:3px solid var(--green);color:#065F46;}
+/* PROGRESS */
+.prog-wrap{margin-top:8px;}
+.prog-lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px;}
+.prog-bar{height:5px;border-radius:3px;background:var(--surface2);overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;background:var(--green);transition:width 0.4s;}
+/* FILTER TABS */
+.ftabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:13px;}
+.ftab{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;font-size:12px;font-weight:500;transition:all 0.15s;}
+.ftab:hover{border-color:var(--border2);color:var(--text);}
+.ftab.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+/* ACTIVITY CARD */
+.act-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow);}
+.act-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;margin-bottom:5px;}
+.act-info{font-size:12px;color:var(--text2);display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.act-notes{margin-top:7px;padding-top:7px;border-top:1px solid var(--border);}
+.note-item{font-size:12px;color:var(--text2);padding:4px 0;border-bottom:1px dashed var(--border);}
+.note-item:last-child{border-bottom:none;}
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:13px;}
+.search-wrap input{padding-left:32px;}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;}
+/* STRIPE */
+.stripe{height:3px;border-radius:2px;margin-bottom:12px;}
+.s-blue{background:var(--blue);}.s-green{background:var(--green);}.s-yellow{background:#F59E0B;}.s-red{background:#EF4444;}.s-navy{background:var(--navy);}.s-orange{background:var(--orange);}.s-purple{background:var(--purple);}
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:14px 0;}
+/* ALERT */
+.alert{padding:9px 13px;border-radius:7px;font-size:13px;margin-bottom:11px;}
+.al-green{background:var(--green-light);border:1px solid var(--green-border);color:var(--green);}
+.al-blue{background:var(--blue-light);border:1px solid var(--blue-border);color:var(--blue2);}
+.al-red{background:var(--red-light);border:1px solid var(--red-border);color:var(--red);}
+.al-yellow{background:var(--yellow-light);border:1px solid var(--yellow-border);color:var(--yellow);}
+/* EMPTY */
+.empty{text-align:center;padding:36px 20px;color:var(--text3);}
+.empty-icon{font-size:32px;margin-bottom:7px;}
+/* CALENDAR */
+.cal-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px;}
+.cal-day{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 6px;min-height:80px;}
+.cal-day.today{border-color:var(--blue);background:var(--blue-light);}
+.cal-day-hdr{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-bottom:4px;}
+.cal-day-num{font-size:13px;font-weight:600;margin-bottom:5px;}
+.cal-event{font-size:10px;padding:2px 5px;border-radius:4px;margin-bottom:2px;line-height:1.3;}
+/* NOTEBOOK */
+.note-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:8px;box-shadow:var(--shadow);}
+.note-card.pinned{border-color:var(--yellow-border);background:var(--yellow-light);}
+/* POST BOX */
+.post-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:13px;font-size:13px;line-height:1.75;white-space:pre-wrap;margin-bottom:10px;max-height:280px;overflow-y:auto;}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+/* RESPONSIVE */
+@media(max-width:640px){.sidebar{display:none;}.g2,.fg,.fg3,.g3,.g4{grid-template-columns:1fr;}.cal-week{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-logo">🛡️</div>
+    <div>
+      <div class="tb-name">QA/QC Engineer</div>
+      <div class="tb-sub">Emad Abosuliman · Alfanar · HVDC 3000MW</div>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-date" id="top-date"></div>
+    <button class="tb-btn" onclick="exportData()">⬇ Export</button>
+    <button class="tb-btn-ghost" onclick="document.getElementById('import-file').click()">⬆ Import</button>
+    <input type="file" id="import-file" accept=".json" onchange="importData(event)">
+  </div>
+</div>
+
+<div class="body">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="nav-sec">Main</div>
+  <button class="nav-item active" onclick="nav('dashboard',this)"><span class="nav-icon">📊</span>Dashboard</button>
+  <button class="nav-item" onclick="nav('activities',this)"><span class="nav-icon">📋</span>Activities<span class="nav-badge" id="nb-ncr" style="display:none"></span></button>
+  <div class="nav-sec">Tools</div>
+  <button class="nav-item" onclick="nav('ncr-ai',this)"><span class="nav-icon">🤖</span>NCR Assistant</button>
+  <button class="nav-item" onclick="nav('linkedin',this)"><span class="nav-icon">💼</span>LinkedIn</button>
+  <button class="nav-item" onclick="nav('report',this)"><span class="nav-icon">📊</span>Weekly Report<span class="nav-thu" id="nb-thu" style="display:none">THU</span></button>
+  <button class="nav-item" onclick="nav('submittals',this)"><span class="nav-icon">📁</span>Submittals</button>
+  <button class="nav-item" onclick="nav('qa',this)"><span class="nav-icon">❓</span>Q&amp;A</button>
+  <div class="nav-sec">Knowledge</div>
+  <button class="nav-item" onclick="nav('tips',this)"><span class="nav-icon">💡</span>Tip Library</button>
+  <button class="nav-item" onclick="nav('notebook',this)"><span class="nav-icon">🧠</span>My Notebook</button>
+  <button class="nav-item" onclick="nav('mylists',this)"><span class="nav-icon">📋</span>My Lists</button>
+  <div class="nav-sec">Career</div>
+  <button class="nav-item" onclick="nav('achievements',this)"><span class="nav-icon">🏆</span>Achievements</button>
+  <button class="nav-item" onclick="nav('projects',this)"><span class="nav-icon">🏗️</span>Past Projects</button>
+  <div class="nav-sec">Settings</div>
+  <button class="nav-item" onclick="nav('settings',this)"><span class="nav-icon">⚙️</span>Settings</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- ═══ DASHBOARD ═══ -->
+<div id="panel-dashboard" class="panel active">
+  <div id="daily-tips-row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin-bottom:16px;"></div>
+
+  <div class="g2" style="margin-bottom:14px;">
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-hdr">
+        <div class="card-title">✅ Today's Tasks</div>
+        <button class="btn btn-sm btn-primary" onclick="openModal('modal-task')">+ Add</button>
+      </div>
+      <div id="task-list"></div>
+    </div>
+    <div>
+      <div class="g4" style="margin-bottom:11px;">
+        <div class="stat stat-link" onclick="navToFilter('NCR')" title="Go to NCRs"><div class="stat-val c-red" id="d-ncr">0</div><div class="stat-label">Open NCRs</div><div class="stat-hint">tap to view →</div></div>
+        <div class="stat stat-link" onclick="navToFilter('RFI')" title="Go to RFIs"><div class="stat-val c-blue" id="d-rfi">0</div><div class="stat-label">Open RFIs</div><div class="stat-hint">tap to view →</div></div>
+        <div class="stat stat-link" onclick="navToFilter('MIR')" title="Go to MIRs"><div class="stat-val c-yellow" id="d-mir">0</div><div class="stat-label">MIRs</div><div class="stat-hint">tap to view →</div></div>
+        <div class="stat stat-link" onclick="navToFilter('Audit')" title="Go to Audits"><div class="stat-val c-green" id="d-audit">0</div><div class="stat-label">Audits</div><div class="stat-hint">tap to view →</div></div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">📨 Morning Digest</div>
+        <div class="btn-group">
+          <button class="btn btn-blue btn-sm" onclick="openGmail()">✉ Gmail</button>
+          <button class="btn btn-wa btn-sm" onclick="copyWhatsApp()">💬 WhatsApp</button>
+        </div>
+        <div id="digest-alert" style="display:none;margin-top:8px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">📈 Project Snapshot — HVDC 3000MW</div></div>
+    <div class="g4" style="margin-bottom:10px;">
+      <div class="stat stat-link" onclick="navToFilter('NCR')"><div class="stat-val c-navy" id="s-ncr-t">0</div><div class="stat-label">Total NCRs</div><div class="stat-hint">tap →</div></div>
+      <div class="stat stat-link" onclick="navToFilter('NCR')"><div class="stat-val c-green" id="s-ncr-c">0</div><div class="stat-label">Closed NCRs</div><div class="stat-hint">tap →</div></div>
+      <div class="stat stat-link" onclick="navToFilter('RFI')"><div class="stat-val c-blue" id="s-rfi">0</div><div class="stat-label">Total RFIs</div><div class="stat-hint">tap →</div></div>
+      <div class="stat stat-link" onclick="navToFilter('MIR')"><div class="stat-val c-yellow" id="s-mir">0</div><div class="stat-label">Total MIRs</div><div class="stat-hint">tap →</div></div>
+      <div class="stat stat-link" onclick="navToFilter('SOR')"><div class="stat-val c-lblue" id="s-sor">0</div><div class="stat-label">Total SORs</div><div class="stat-hint">tap →</div></div>
+      <div class="stat stat-link" onclick="navToFilter('Audit')"><div class="stat-val c-green" id="s-audit">0</div><div class="stat-label">Audits</div><div class="stat-hint">tap →</div></div>
+      <div class="stat stat-link" onclick="navToFilter('open')"><div class="stat-val c-orange" id="s-overdue">0</div><div class="stat-label">Overdue NCRs</div><div class="stat-hint">tap →</div></div>
+      <div class="stat"><div class="stat-val c-purple" id="s-day">1</div><div class="stat-label">App Day</div></div>
+    </div>
+    <div id="ncr-prog-wrap" style="display:none;" class="prog-wrap">
+      <div class="prog-lbl"><span>NCR Closure Rate</span><span id="ncr-prog-txt">0%</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="ncr-prog-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ACTIVITIES ═══ -->
+<div id="panel-activities" class="panel">
+  <div class="pg-title">Activities Log</div>
+  <div class="pg-sub">Track all NCRs, MIRs, RFIs, SORs and Audits.</div>
+  <div class="btn-group" style="margin-bottom:12px;">
+    <button class="btn btn-primary btn-sm" onclick="openActModal('NCR')">+ NCR</button>
+    <button class="btn btn-blue btn-sm" onclick="openActModal('MIR')">+ MIR</button>
+    <button class="btn btn-green btn-sm" onclick="openActModal('RFI')">+ RFI</button>
+    <button class="btn btn-yellow btn-sm" onclick="openActModal('SOR')">+ SOR</button>
+    <button class="btn btn-sm" onclick="openActModal('Audit')">+ Audit</button>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="act-search" placeholder="Search activities..." oninput="renderActs()">
+  </div>
+  <div class="ftabs">
+    <button class="ftab active" onclick="filterAct('all',this)">All</button>
+    <button class="ftab" onclick="filterAct('NCR',this)">NCR</button>
+    <button class="ftab" onclick="filterAct('MIR',this)">MIR</button>
+    <button class="ftab" onclick="filterAct('RFI',this)">RFI</button>
+    <button class="ftab" onclick="filterAct('SOR',this)">SOR</button>
+    <button class="ftab" onclick="filterAct('Audit',this)">Audit</button>
+    <button class="ftab" onclick="filterAct('open',this)">⚠ Open</button>
+  </div>
+  <div id="act-list"></div>
+</div>
+
+<!-- ═══ NCR AI ═══ -->
+<div id="panel-ncr-ai" class="panel">
+  <div class="pg-title">🤖 NCR AI Assistant</div>
+  <div class="pg-sub">5 targeted questions → Root Cause (5-Why) · Corrective Action · Preventive Action · Guidance Summary.</div>
+  <div class="card">
+    <div class="chat-wrap" id="ncr-chat"></div>
+    <div class="ff"><textarea id="ncr-inp" placeholder="Type your answer here..." rows="3"></textarea></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="sendNcr()">➤ Send</button>
+      <button class="btn" onclick="resetNcr()">↺ New NCR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LINKEDIN ═══ -->
+<div id="panel-linkedin" class="panel">
+  <div class="pg-title">💼 LinkedIn Post Generator</div>
+  <div class="pg-sub">AI generates professional posts from your work. Review and approve before posting.</div>
+  <div class="card">
+    <div class="stripe s-blue"></div>
+    <div class="card-title">✨ Generate Post</div>
+    <div class="fg">
+      <div><label>Post Type</label>
+        <select id="post-type">
+          <option value="weekly">Weekly update (from your log)</option>
+          <option value="monthly">Monthly insight</option>
+          <option value="hvdc">HVDC VSC technical tip</option>
+          <option value="iso">ISO / Quality insight</option>
+          <option value="career">Career lesson</option>
+          <option value="leadership">Quality leadership</option>
+        </select>
+      </div>
+      <div><label>Custom Topic (optional)</label><input type="text" id="post-topic" placeholder="e.g. DC earth switch interlock test"></div>
+    </div>
+    <button class="btn btn-primary" onclick="genPost()">🪄 Generate Post</button>
+  </div>
+  <div id="post-output"></div>
+  <div class="card"><div class="stripe s-navy"></div><div class="card-title">📜 Post History</div><div id="post-history"></div></div>
+</div>
+
+<!-- ═══ SUBMITTALS ═══ -->
+<div id="panel-submittals" class="panel">
+  <div class="pg-title">📁 Document Submittal Tracker</div>
+  <div class="pg-sub">Track all submittals sent to client — revision status, approval, rejection reasons.</div>
+  <div class="btn-group" style="margin-bottom:14px;">
+    <button class="btn btn-primary" onclick="openModal('modal-submittal')">+ Add Submittal</button>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="sub-search" placeholder="Search submittals..." oninput="renderSubmittals()">
+  </div>
+  <div class="ftabs">
+    <button class="ftab active" onclick="filterSub('all',this)">All</button>
+    <button class="ftab" onclick="filterSub('Under Review',this)">Under Review</button>
+    <button class="ftab" onclick="filterSub('Approved',this)">Approved</button>
+    <button class="ftab" onclick="filterSub('Rejected',this)">Rejected</button>
+    <button class="ftab" onclick="filterSub('Resubmit',this)">Resubmit Required</button>
+  </div>
+  <div id="sub-list"></div>
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title">📊 Submittal Summary</div>
+    <div class="g4">
+      <div class="stat"><div class="stat-val c-navy" id="sub-total">0</div><div class="stat-label">Total</div></div>
+      <div class="stat"><div class="stat-val c-green" id="sub-approved">0</div><div class="stat-label">Approved</div></div>
+      <div class="stat"><div class="stat-val c-yellow" id="sub-review">0</div><div class="stat-label">Under Review</div></div>
+      <div class="stat"><div class="stat-val c-red" id="sub-rejected">0</div><div class="stat-label">Rejected</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WEEKLY REPORT ═══ -->
+<div id="panel-report" class="panel">
+  <div class="pg-title">📊 Weekly Summary Report</div>
+  <div class="pg-sub">Auto-generated every Thursday. Review, copy or send to your manager.</div>
+  <div id="thu-reminder" style="display:none;" class="alert al-yellow" style="margin-bottom:12px;">📅 Today is Thursday — your weekly report is ready!</div>
+  <div class="card">
+    <div class="stripe s-navy"></div>
+    <div class="card-hdr">
+      <div class="card-title">Week of <span id="report-week"></span></div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm" onclick="genReport()">🔄 Generate</button>
+        <button class="btn btn-blue btn-sm" onclick="copyReport()">📋 Copy</button>
+        <button class="btn btn-wa btn-sm" onclick="sendReportWA()">💬 WhatsApp</button>
+        <button class="btn btn-sm" onclick="sendReportGmail()">✉ Gmail</button>
+      </div>
+    </div>
+    <div id="report-body" style="font-size:13px;line-height:1.8;color:var(--text2);white-space:pre-wrap;background:var(--surface2);border-radius:8px;padding:14px;min-height:100px;"></div>
+  </div>
+  <div class="card"><div class="card-title">📁 Report History</div><div id="report-history"></div></div>
+</div>
+
+<!-- ═══ TIP LIBRARY ═══ -->
+<div id="panel-tips" class="panel">
+  <div class="pg-title">💡 Tip Library</div>
+  <div class="pg-sub">5 new tips unlock every day — one per category. Build your knowledge daily.</div>
+  <div class="card" style="margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div style="font-size:22px;font-weight:600;color:var(--navy);" id="tip-day-count">Day 1</div>
+        <div style="font-size:12px;color:var(--text2);" id="tip-unlock-count">5 tips unlocked</div>
+      </div>
+      <div class="prog-wrap" style="flex:1;max-width:300px;margin-top:0;">
+        <div class="prog-lbl"><span>Progress</span><span id="tip-prog-txt">5 / 300</span></div>
+        <div class="prog-bar"><div class="prog-fill" id="tip-prog-bar" style="width:1.6%;"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tip-cats">
+    <button class="tip-cat-btn active" onclick="filterTips('all',this)">All</button>
+    <button class="tip-cat-btn" onclick="filterTips('HVDC',this)">⚡ HVDC VSC</button>
+    <button class="tip-cat-btn" onclick="filterTips('QA/QC',this)">📋 QA/QC</button>
+    <button class="tip-cat-btn" onclick="filterTips('ISO',this)">📜 ISO</button>
+    <button class="tip-cat-btn" onclick="filterTips('Career',this)">🚀 Career</button>
+    <button class="tip-cat-btn" onclick="filterTips('Leadership',this)">🧠 Leadership</button>
+  </div>
+  <div id="tip-library"></div>
+</div>
+
+<!-- ═══ NOTEBOOK ═══ -->
+<div id="panel-notebook" class="panel">
+  <div class="pg-title">🧠 My Notebook</div>
+  <div class="pg-sub">Capture ideas, thoughts and observations instantly. Convert any note to a task.</div>
+  <div class="card">
+    <div class="card-title">⚡ Quick Capture</div>
+    <div class="ff"><textarea id="note-inp" placeholder="Type any idea, observation, or thought..." rows="3"></textarea></div>
+    <div class="fg">
+      <div><label>Category</label>
+        <select id="note-cat">
+          <option>HVDC</option><option>QA/QC</option><option>Career</option>
+          <option>LinkedIn Idea</option><option>Personal</option><option>General</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:7px;">
+        <button class="btn btn-primary" onclick="saveNote()">💾 Save Note</button>
+        <button class="btn btn-yellow" onclick="saveNote(true)">📌 Pin</button>
+      </div>
+    </div>
+  </div>
+  <div class="ftabs" id="note-filter-tabs">
+    <button class="ftab active" onclick="filterNotes('all',this)">All</button>
+    <button class="ftab" onclick="filterNotes('pinned',this)">📌 Pinned</button>
+    <button class="ftab" onclick="filterNotes('HVDC',this)">HVDC</button>
+    <button class="ftab" onclick="filterNotes('QA/QC',this)">QA/QC</button>
+    <button class="ftab" onclick="filterNotes('Career',this)">Career</button>
+    <button class="ftab" onclick="filterNotes('LinkedIn Idea',this)">LinkedIn</button>
+  </div>
+  <div id="note-list"></div>
+</div>
+
+<!-- ═══ Q&A ═══ -->
+<div id="panel-qa" class="panel">
+  <div class="pg-title">❓ Q&amp;A</div>
+  <div class="pg-sub">Ask anything about HVDC, QA/QC, ISO, or your career. Save useful answers to history.</div>
+  <div class="card">
+    <div class="card-title">💬 Ask a Question</div>
+    <div class="ff"><textarea id="qa-input" placeholder="e.g. What is the difference between a corrective action and a preventive action in ISO 9001? Or: What should I check during DC yard commissioning?" rows="4"></textarea></div>
+    <button class="btn btn-primary" onclick="askQA()">➤ Get Answer</button>
+  </div>
+  <div id="qa-answer-wrap" style="display:none;">
+    <div class="card">
+      <div class="stripe s-green"></div>
+      <div class="card-title">💡 Answer</div>
+      <div id="qa-answer" style="font-size:13px;line-height:1.75;color:var(--text2);white-space:pre-wrap;"></div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-green" onclick="saveQA()">💾 Save to History</button>
+        <button class="btn btn-red" onclick="discardQA()">🗑 Discard</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:4px;">
+    <div class="card-hdr">
+      <div class="card-title">📚 Q&amp;A History</div>
+      <div class="search-wrap" style="margin-bottom:0;flex:1;max-width:260px;margin-left:10px;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="qa-search" placeholder="Search history..." oninput="renderQAHistory()">
+      </div>
+    </div>
+    <div id="qa-history"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="card">
+    <div class="card-hdr">
+      <div class="card-title">🎨 Whiteboard</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;">
+        <button class="btn btn-xs" id="wb-pencil" onclick="setWbTool('pencil')">✏️ Draw</button>
+        <button class="btn btn-xs" id="wb-sticky" onclick="setWbTool('sticky')">📌 Sticky</button>
+        <button class="btn btn-xs" id="wb-mindmap" onclick="setWbTool('mindmap')">🔵 Node</button>
+        <button class="btn btn-xs btn-red" onclick="clearWb()">🗑 Clear</button>
+        <button class="btn btn-xs btn-blue" onclick="saveWbImage()">⬇ Save</button>
+      </div>
+    </div>
+    <div id="wb-tool-hint" style="font-size:11px;color:var(--text3);margin-bottom:8px;">Select a tool above to start</div>
+    <canvas id="whiteboard" width="900" height="520" style="width:100%;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:crosshair;touch-action:none;display:block;"></canvas>
+    <div id="wb-stickies" style="position:relative;margin-top:10px;min-height:20px;"></div>
+  </div>
+</div>
+
+<!-- ═══ MY LISTS ═══ -->
+<div id="panel-mylists" class="panel">
+  <div class="pg-title">📋 My Lists</div>
+  <div class="pg-sub">Structured checklists — documents, study plans, inspection items. Convert notebook notes to list items.</div>
+  <div class="card-hdr" style="margin-bottom:14px;">
+    <div></div>
+    <button class="btn btn-primary" onclick="openModal('modal-list')">+ New List</button>
+  </div>
+  <div id="my-lists"></div>
+</div>
+
+<!-- ═══ ACHIEVEMENTS ═══ -->
+<div id="panel-achievements" class="panel">
+  <div class="pg-title">🏆 Achievements & Career Progress</div>
+  <div class="pg-sub">Certifications, milestones and monthly performance.</div>
+  <div class="g2">
+    <div class="card" style="margin-bottom:0;">
+      <div class="stripe s-yellow"></div>
+      <div class="card-hdr"><div class="card-title">🎓 Certifications</div><button class="btn btn-sm" onclick="openModal('modal-cert')">+ Add</button></div>
+      <div id="cert-list"></div>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <div class="stripe s-blue"></div>
+      <div class="card-hdr"><div class="card-title">🚩 Milestones</div><button class="btn btn-sm" onclick="openModal('modal-ms')">+ Add</button></div>
+      <div id="ms-list"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <div class="stripe s-green"></div>
+    <div class="card-title">📊 This Month's Performance</div>
+    <div class="g4">
+      <div class="stat"><div class="stat-val c-red" id="m-ncr">0</div><div class="stat-label">NCRs Raised</div></div>
+      <div class="stat"><div class="stat-val c-green" id="m-closed">0</div><div class="stat-label">NCRs Closed</div></div>
+      <div class="stat"><div class="stat-val c-blue" id="m-audit">0</div><div class="stat-label">Audits</div></div>
+      <div class="stat"><div class="stat-val c-yellow" id="m-rfi">0</div><div class="stat-label">RFIs Answered</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAST PROJECTS ═══ -->
+<div id="panel-projects" class="panel">
+  <div class="pg-title">🏗️ Past Projects</div>
+  <div class="pg-sub">Log previous project data for CV generation and career achievements.</div>
+  <div class="card-hdr"><div></div><button class="btn btn-primary" onclick="openModal('modal-proj')">+ Add Project</button></div>
+  <div id="proj-list"></div>
+</div>
+
+<!-- ═══ SETTINGS ═══ -->
+<div id="panel-settings" class="panel">
+  <div class="pg-title">⚙️ Settings</div>
+  <div class="pg-sub">Configure your profile and AI setup.</div>
+  <div class="card">
+    <div class="card-title">👤 Profile</div>
+    <div class="fg"><div><label>Full Name</label><input id="cfg-name" value="Emad Othman Abosuliman"></div><div><label>Company</label><input id="cfg-company" value="Alfanar"></div></div>
+    <div class="fg"><div><label>Project</label><input id="cfg-project" value="HVDC 3000MW VSC — COA-WOA-HHR1"></div><div><label>Role</label><input id="cfg-role" value="QA/QC Electrical Engineer"></div></div>
+    <div class="ff"><label>Email (for digest)</label><input type="email" id="cfg-email" placeholder="your@email.com"></div>
+    <button class="btn btn-primary btn-sm" onclick="saveSettings()">💾 Save</button>
+    <div id="cfg-saved" style="display:none;margin-top:8px;" class="alert al-green">Saved.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🤖 AI Setup</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.65;">NCR Assistant and LinkedIn generator need an Anthropic API key.<br>Get one free at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys. Stored only on your device.</p>
+    <div class="ff"><label>Anthropic API Key</label><input type="password" id="cfg-apikey" placeholder="sk-ant-..."></div>
+    <button class="btn btn-primary btn-sm" onclick="saveSettings()">💾 Save Key</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🗄️ Data Management</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:10px;">Export weekly to keep a backup. Import on any device to restore.</p>
+    <div class="btn-group">
+      <button class="btn btn-primary btn-sm" onclick="exportData()">⬇ Export Backup</button>
+      <button class="btn btn-blue btn-sm" onclick="document.getElementById('import-file').click()">⬆ Import Backup</button>
+      <button class="btn btn-red btn-sm" onclick="clearAll()">🗑 Clear All Data</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- content -->
+</div><!-- body -->
+</div><!-- app -->
+
+<!-- ═══ MODALS ═══ -->
+<div class="overlay" id="modal-task">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Add Task</div><button class="btn btn-xs" onclick="closeModal('modal-task')">✕</button></div>
+    <div class="ff"><label>Task Description</label><input id="t-txt" placeholder="e.g. Follow up NCR-003 on DC Disconnector"></div>
+    <div class="fg">
+      <div><label>Due Date</label><input type="date" id="t-date"></div>
+      <div><label>Priority</label><select id="t-pri"><option value="high">🔴 High</option><option value="med" selected>🟡 Medium</option><option value="low">🟢 Low</option></select></div>
+    </div>
+    <div class="ff"><label>Category</label><select id="t-cat"><option>NCR</option><option>RFI</option><option>MIR</option><option>SOR</option><option>Audit</option><option>General</option></select></div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveTask()">💾 Save</button><button class="btn" onclick="closeModal('modal-task')">Cancel</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-activity">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" id="modal-act-title">Add Activity</div><button class="btn btn-xs" onclick="closeModal('modal-activity')">✕</button></div>
+    <div id="modal-act-fields"></div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveAct()">💾 Save</button><button class="btn" onclick="closeModal('modal-activity')">Cancel</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-note-add">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Add to Task</div><button class="btn btn-xs" onclick="closeModal('modal-note-add')">✕</button></div>
+    <div class="ff"><label>Follow-up Note</label><textarea id="act-note-inp" placeholder="Add a follow-up note for this activity..." rows="3"></textarea></div>
+    <input type="hidden" id="act-note-idx">
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveActNote()">💾 Save Note</button><button class="btn" onclick="closeModal('modal-note-add')">Cancel</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-cert">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Add Certification</div><button class="btn btn-xs" onclick="closeModal('modal-cert')">✕</button></div>
+    <div class="ff"><label>Name</label><input id="c-name" placeholder="e.g. ISO 45001 Lead Auditor"></div>
+    <div class="fg"><div><label>Status</label><select id="c-status"><option>Planned</option><option>In Progress</option><option>Completed</option></select></div><div><label>Year</label><input id="c-year" placeholder="2026"></div></div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveCert()">💾 Save</button><button class="btn" onclick="closeModal('modal-cert')">Cancel</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-ms">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Add Milestone</div><button class="btn btn-xs" onclick="closeModal('modal-ms')">✕</button></div>
+    <div class="ff"><label>Milestone</label><input id="ms-txt" placeholder="e.g. Completed first valve hall inspection"></div>
+    <div class="fg"><div><label>Date</label><input type="date" id="ms-date"></div><div><label>Category</label><select id="ms-cat"><option>Project</option><option>Certification</option><option>Career</option><option>Learning</option></select></div></div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveMs()">💾 Save</button><button class="btn" onclick="closeModal('modal-ms')">Cancel</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-proj">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Add Past Project</div><button class="btn btn-xs" onclick="closeModal('modal-proj')">✕</button></div>
+    <div class="fg"><div><label>Project Name</label><input id="pj-name" placeholder="e.g. 380kV BSP Substation"></div><div><label>Company</label><input id="pj-company" placeholder="e.g. Algihaz Holding"></div></div>
+    <div class="fg"><div><label>Start Date</label><input type="month" id="pj-start"></div><div><label>End Date</label><input type="month" id="pj-end"></div></div>
+    <div class="fg3"><div><label>Audits Done</label><input type="number" id="pj-audits" placeholder="0" min="0"></div><div><label>NCRs Raised</label><input type="number" id="pj-ncrs" placeholder="0" min="0"></div><div><label>NCRs Closed</label><input type="number" id="pj-closed" placeholder="0" min="0"></div></div>
+    <div class="fg"><div><label>MIRs / RFIs</label><input type="number" id="pj-docs" placeholder="0" min="0"></div><div><label>Project Value / Scale</label><input id="pj-scale" placeholder="e.g. 1330 buildings, 380kV"></div></div>
+    <div class="ff"><label>Key Achievements</label><textarea id="pj-ach" placeholder="e.g. Zero major NCRs on final commissioning, first-time pass rate 95%..."></textarea></div>
+    <div class="ff"><label>Role</label><input id="pj-role" placeholder="e.g. QA/QC Electrical Engineer"></div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveProj()">💾 Save</button><button class="btn" onclick="closeModal('modal-proj')">Cancel</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-list">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">New List</div><button class="btn btn-xs" onclick="closeModal('modal-list')">✕</button></div>
+    <div class="ff"><label>List Title</label><input id="list-title" placeholder="e.g. Documents missing from dossier"></div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveList()">💾 Create List</button><button class="btn" onclick="closeModal('modal-list')">Cancel</button></div>
+  </div>
+</div>
+
+<script>
+// ═══ TIPS DATABASE ═══
+const TIPS_DB = {
+  HVDC: [
+    "In MMC-VSC, each submodule has T1 and T2 IGBTs — never both ON simultaneously. That is a shoot-through fault that destroys the capacitor instantly. The gate driver enforces a dead-time between switching transitions.",
+    "The valve cooling system uses deionized (DI) water as primary coolant. Conductivity must stay below 0.2 µS/cm. Higher conductivity creates leakage current paths through cooling pipes directly to IGBT modules — a critical QC check point.",
+    "DC earth switches CANNOT interrupt load current — DC has no zero crossing. The mechanical interlock preventing earth switch closure while the disconnector is closed is a life-safety device. Test it physically on every unit.",
+    "The DC chopper (braking resistor) is VSC-specific. It protects against DC bus overvoltage when the inverter-side AC grid is suddenly lost. Without it, excess energy destroys converter components — critical commissioning test item.",
+    "Fiber optic cables transmit firing signals across the HV isolation barrier between the CPS (ground level) and gate drivers (HV potential). They are the ONLY way to cross this barrier. Check bend radius — violations increase attenuation and cause IGBT misfiring.",
+    "Post insulators in the DC yard require higher creepage than equivalent AC voltage — there is no zero crossing to help extinguish surface discharge. For KSA sites (pollution class d/e), verify creepage distance against IEC 60815.",
+    "The phase reactor controls active and reactive power flow by creating a voltage difference between the grid and converter. It also limits fault current rise rate through the IGBTs during faults. It is always air-core — no iron that could saturate.",
+    "MMC submodule capacitors: typical values are 1–10 mF at 2–4 kV per submodule. With 1200–2400 submodules per converter, systematic sampling inspection is essential. Capacitor voltage balancing is managed continuously by the control system.",
+    "The charging resistor limits inrush current when MMC capacitors charge from zero on startup. Without it, inrush current would destroy IGBTs and the converter transformer. The bypass contactor timing is a critical commissioning test.",
+    "VSC-HVDC supports black-start capability — it can energize a completely dead AC grid. LCC-HVDC cannot do this. This makes VSC essential for remote renewable energy integration where grid strength is weak.",
+  ],
+  'QA/QC': [
+    "HVDC ELECTRICAL: IGBTs in MMC submodules switch at 1–2 kHz. The resulting dV/dt (voltage rate of change) can be 5–10 kV/µs. This means stray inductance in the switching loop — even a few nanohenries — creates significant voltage spikes. Snubber circuits and low-inductance busbar layouts are critical QC verification items.",
+    "GENERAL ELECTRICAL: Before any HV equipment energization, verify the insulation resistance (IR) test was done with the correct megger voltage — typically 5kV for equipment rated above 1kV. A 500V megger on HV equipment gives a meaningless result and will not detect moisture in insulation.",
+    "HVDC ELECTRICAL: DC surge arresters are more demanding than AC types. Under DC voltage there is no zero crossing to help extinguish discharge — the arrester must handle continuous leakage current. Verify leakage current at continuous operating voltage (COV) is below 1mA. Above this = degraded MOV elements.",
+    "GENERAL ELECTRICAL: When measuring contact resistance (DCRM) on switchgear, always use at least 100A DC test current. Low-current measurements (1–10A) give falsely optimistic results because they do not heat the contact surface enough to reveal high-resistance oxide layers.",
+    "HVDC ELECTRICAL: Converter transformers carry combined AC and DC voltage stress on their insulation — this is fundamentally different from standard power transformers. The DC component causes electrostatic charge distribution in the insulation that AC alone does not. FAT records must include DC polarization tests.",
+    "GENERAL ELECTRICAL: Torque verification on HV busbar bolted joints is not optional. Under-torque leads to high contact resistance and hot spots. Over-torque deforms the contact surface. Always use the approved torque table and a calibrated torque wrench — not an impact gun.",
+    "HVDC ELECTRICAL: The valve hall must maintain positive pressure relative to outside at all times. Negative pressure allows dust ingress onto IGBT modules — dust contamination on HV surfaces leads to partial discharge and eventual insulation failure. Check HVAC system commissioning records carefully.",
+    "GENERAL ELECTRICAL: When reviewing CT (current transformer) test certificates, check both the accuracy class AND the rated burden. A CT with correct accuracy class but oversized burden will perform worse than specified when connected to low-impedance protection relays.",
+    "HVDC ELECTRICAL: Fiber optic link attenuation in the valve hall must be tested with an OTDR (Optical Time Domain Reflectometer), not just a power meter. The OTDR identifies the exact location of any bend radius violation or connector contamination — essential for a system with thousands of fiber runs.",
+    "GENERAL ELECTRICAL: Earth grid resistance testing (using fall-of-potential method) must be done with the grid isolated from all external connections. Parallel paths through cable sheaths and equipment frames will give falsely low readings that mask an inadequate earth grid.",
+  ],
+  ISO: [
+    "ISO 9001:2015 Clause 10.2 requires three things for every nonconformance: correct it, determine the root cause, and take action to prevent recurrence. A corrective action without documented root cause is not ISO compliant.",
+    "ISO 9001:2015 uses a High Level Structure (HLS) — the same framework as ISO 45001 and ISO 14001. Once you understand the structure in one standard, the others follow the same logic. Context → Leadership → Planning → Support → Operation → Evaluation → Improvement.",
+    "ISO 9001 Clause 7.1.5 covers measurement resources. All measuring equipment must be calibrated at specified intervals against measurement standards traceable to international standards. Keep a calibration register and check it monthly.",
+    "ISO 45001 Clause 6.1.2 requires hazard identification and risk assessment — the OHS equivalent of 9001's risk and opportunities. On HVDC projects, DC voltage hazards, arc flash, and SF6 gas exposure are your top hazard categories.",
+    "ISO 14001 Clause 6.1.2 requires identification of environmental aspects and impacts. On a converter station, consider: SF6 gas leaks from circuit breakers, oil spills from transformers, DI water discharge, and diesel generator emissions.",
+    "ISO 9001 Clause 8.4 covers control of externally provided processes. On your project this means vendor FAT records, subcontractor inspection results, and supplier material certificates. You are responsible for verifying all of these.",
+    "ISO 9001 Clause 9.1.3 is analysis and evaluation. This is where your KPI dashboard becomes a QMS requirement — not just a nice tool. NCR closure rate, first-time pass rate, IR rejection rate are all Clause 9.1.3 evidence.",
+    "ISO 9001 Clause 5.1 Leadership and commitment — top management must demonstrate commitment to QMS, not just delegate it. On site, this means the Project Manager participates in quality reviews, not just the QC team.",
+    "ISO 45001 requires worker participation in OHS decisions (Clause 5.4). On HVDC projects, toolbox talks before high-voltage work, near-miss reporting, and permit-to-work systems all fulfil this requirement.",
+    "ISO 19011 is the standard for auditing management systems — covers audit principles, programme management, and auditor competence. As a Lead Auditor, knowing this standard makes your audits more defensible and professional.",
+  ],
+  Career: [
+    "HVDC VSC QC experience is globally rare. Most engineers never work on one project. Keep a personal log of every piece of equipment you inspect, every NCR you raise, and every commissioning test you witness. These are your career proof points.",
+    "When writing your CV, never just list job titles and dates. Quantify: 'Managed QC for 380kV substation — raised 47 NCRs, achieved 96% first-time inspection pass rate, zero open Category A punch list items at energization.' Numbers win interviews.",
+    "LinkedIn posts from a real HVDC project build a professional profile that no qualification alone can match. The Saudi energy sector is a small, well-connected community. One insightful post seen by the right person is worth ten applications.",
+    "The salary gap between a QC Engineer and a Quality Manager in KSA is typically SAR 8,000–15,000 per month. The two things that close this gap fastest: HVDC project delivery experience + ASQ CQM or CQE certification.",
+    "For your next role after this project, target: Senior QC Engineer at Hitachi Energy, Siemens Energy, or GE Vernova — they are the three main HVDC contractors globally. Your VSC experience makes you immediately relevant to their project teams.",
+    "The ASQ CQM (Certified Quality Manager) exam tests strategic quality thinking, not just technical inspection. Study the ASQ Body of Knowledge — it covers leadership, cost of quality, change management, and customer focus. Very different from audit knowledge.",
+    "PMP certification bridges quality and project management — the combination is rare and highly valued. Quality Managers who speak project language (critical path, earned value, risk register) get promoted faster than those who only speak NCRs.",
+    "When preparing for a Quality Manager interview, prepare three stories in STAR format (Situation, Task, Action, Result) for: a major NCR you resolved, a process improvement you led, and a time you pushed back on schedule pressure to maintain quality.",
+    "Build relationships with SEC QA representatives on your project. They are future references, future colleagues, or future clients. Professional, consistent, well-documented QC work is your best introduction — they remember engineers who make their job easier.",
+    "Consider teaching or mentoring as a career differentiator. Running a toolbox talk on NCR management, presenting at a quality circle, or mentoring a junior engineer all demonstrate leadership ability — which is what director-level roles require.",
+  ],
+  Leadership: [
+    "Quality culture cannot be built by one engineer with a clipboard. It requires consistent messaging from the top and bottom. When you raise an NCR, explain WHY it matters to the team, not just that it is a violation. Understanding creates compliance.",
+    "The most effective QC leaders I have seen do not catch more defects — they prevent them. Invest time in pre-installation briefings, toolbox talks on critical activities, and reviewing method statements before work starts. Prevention is cheaper than NCRs.",
+    "When a contractor pushes back on an NCR, stay factual — cite the specification clause, the ITP requirement, and the observed condition. Never make it personal. 'The measurement is 45µΩ against a specified maximum of 50µΩ — it passes' ends the argument.",
+    "Build your weekly schedule around Hold Points, not around emails. Your highest value activity is signing off critical inspections on time. Everything else can wait. A missed Hold Point costs more than a day of emails ever could.",
+    "The best quality report is the one the client reads. Keep weekly reports concise: what was inspected, what NCRs were raised, what was closed, what is planned next week. Two pages maximum. A 20-page report that nobody reads has zero quality value.",
+  ]
+};
+
+const CAT_COLORS = {
+  HVDC:{bg:'#EBF5FF',ic:'#1A56DB',icon:'⚡'},
+  'QA/QC':{bg:'#DEF7EC',ic:'#057A55',icon:'📋'},
+  ISO:{bg:'#FEF3C7',ic:'#92400E',icon:'📜'},
+  Career:{bg:'#F5F3FF',ic:'#5B21B6',icon:'🚀'},
+  Leadership:{bg:'#FFF7ED',ic:'#C2410C',icon:'🧠'}
+};
+
+const ACT_FIELDS = {
+  NCR:`<div class="fg"><div><label>NCR Number *</label><input id="f0" placeholder="NCR-001"></div><div><label>Date *</label><input type="date" id="f1"></div></div>
+  <div class="fg"><div><label>Equipment / Zone</label><input id="f2" placeholder="e.g. DC Disconnector, Zone 3"></div><div><label>Class</label><select id="f3"><option>Major</option><option>Minor</option></select></div></div>
+  <div class="ff"><label>Description</label><textarea id="f4" placeholder="Describe the nonconformance found..."></textarea></div>
+  <div class="fg"><div><label>Status</label><select id="f5"><option>Open</option><option>Closed</option></select></div><div><label>Disposition</label><select id="f6"><option>Pending</option><option>Use As Is (UAI)</option><option>Repair</option><option>Rework</option><option>Replace</option></select></div></div>
+  <div class="fg"><div><label>Linked To (optional)</label><input id="f7" placeholder="e.g. Audit-003, RFI-007"></div><div><label>Due Date</label><input type="date" id="f8"></div></div>`,
+  MIR:`<div class="fg"><div><label>MIR Number *</label><input id="f0" placeholder="MIR-001"></div><div><label>Date *</label><input type="date" id="f1"></div></div>
+  <div class="fg"><div><label>Material / Equipment</label><input id="f2" placeholder="e.g. DC Surge Arrester"></div><div><label>Supplier</label><input id="f3" placeholder="Supplier name"></div></div>
+  <div class="fg"><div><label>Result</label><select id="f4"><option>Accepted</option><option>Rejected</option><option>Pending Review</option></select></div><div><label>Status</label><select id="f5"><option>Open</option><option>Closed</option></select></div></div>
+  <div class="ff"><label>Notes</label><textarea id="f6" placeholder="Inspection observations..."></textarea></div>`,
+  RFI:`<div class="fg"><div><label>RFI Number *</label><input id="f0" placeholder="RFI-001"></div><div><label>Date *</label><input type="date" id="f1"></div></div>
+  <div class="ff"><label>Subject *</label><input id="f2" placeholder="RFI subject / question"></div>
+  <div class="fg"><div><label>Issued To</label><input id="f3" placeholder="e.g. Design Team / SEC"></div><div><label>Status</label><select id="f4"><option>Open</option><option>Answered</option><option>Closed</option></select></div></div>
+  <div class="ff"><label>Response Summary</label><textarea id="f5" placeholder="Summary of response..."></textarea></div>
+  <div class="ff"><label>Due Date</label><input type="date" id="f6"></div>`,
+  SOR:`<div class="fg"><div><label>SOR Number *</label><input id="f0" placeholder="SOR-001"></div><div><label>Date *</label><input type="date" id="f1"></div></div>
+  <div class="ff"><label>Scope / Description</label><textarea id="f2" placeholder="Scope of the SOR..."></textarea></div>
+  <div class="fg"><div><label>Status</label><select id="f3"><option>Open</option><option>Closed</option></select></div><div><label>Notes</label><input id="f4" placeholder="Notes..."></div></div>`,
+  Audit:`<div class="fg"><div><label>Audit Date *</label><input type="date" id="f0"></div><div><label>Type</label><select id="f1"><option>Internal</option><option>External</option><option>Third-Party</option></select></div></div>
+  <div class="ff"><label>Area / Department</label><input id="f2" placeholder="e.g. DC Yard Installation"></div>
+  <div class="fg3"><div><label>Total Findings</label><input type="number" id="f3" placeholder="0" min="0"></div><div><label>NCRs Open</label><input type="number" id="f4" placeholder="0" min="0"></div><div><label>NCRs Closed</label><input type="number" id="f5" placeholder="0" min="0"></div></div>
+  <div class="ff"><label>Status</label><select id="f6"><option>Open</option><option>Closed</option></select></div>`
+};
+
+const AB={NCR:'b-red',MIR:'b-yellow',RFI:'b-blue',SOR:'b-lblue',Audit:'b-green'};
+const SB={Open:'b-red',Closed:'b-green',Answered:'b-green','Pending Review':'b-yellow'};
+
+// ═══ STATE ═══
+let S = {
+  tasks:[], activities:[], certs:[
+    {name:'ISO 9001:2015 Lead Auditor (QMS) — CQI & IRCA',status:'Completed',year:'2025'},
+    {name:'ISO 45001 Lead Auditor',status:'Planned',year:'2026'},
+    {name:'ISO 14001 Lead Auditor',status:'Planned',year:'2027'},
+    {name:'ASQ — Certified Quality Manager (CQM)',status:'Planned',year:'2027'},
+    {name:'PMP — Project Management Professional',status:'In Progress',year:'2028'}
+  ],
+  milestones:[
+    {text:'Joined Alfanar HVDC 3000MW VSC project',date:'2026-01-01',cat:'Project'},
+    {text:'ISO 9001:2015 Lead Auditor certified',date:'2025-09-26',cat:'Certification'}
+  ],
+  posts:[], reports:[], notes:[], lists:[], projects:[
+    {name:'380kV BSP & 110/13.8kV Substations (Arafat 5 & Khulais 2)',company:'Algihaz Holding',start:'2024-05',end:'2026-01',audits:0,ncrs:0,closed:0,docs:0,scale:'SEC-approved, 2 substations',achievements:'Led full QC documentation and NCR management for SEC-approved substation projects.',role:'QA/QC Electrical Engineer'},
+    {name:'Residential Development (1330 Buildings + Mosques + Boulevards)',company:'Dor Real Estate',start:'2023-04',end:'2024-05',audits:0,ncrs:0,closed:0,docs:0,scale:'1330 buildings, 4 mosques, 3 boulevards',achievements:'Coordinated QA across 1330+ building units, reviewed NCRs from consultant, managed subcontractor quality oversight.',role:'Senior Electrical Engineer'}
+  ],
+  tipFilter:'all', actFilter:'all', noteFilter:'all',
+  startDate: new Date().toISOString().slice(0,10),
+  cfg:{name:'Emad Othman Abosuliman',company:'Alfanar',project:'HVDC 3000MW VSC — COA-WOA-HHR1',email:'',role:'QA/QC Electrical Engineer',apiKey:''},
+  ncrChat:[], ncrStep:0,
+  lastPost:null
+};
+
+function load(){try{const d=localStorage.getItem('qaqc_eng_v1');if(d)Object.assign(S,JSON.parse(d));}catch(e){}renderAll();}
+function save(){try{localStorage.setItem('qaqc_eng_v1',JSON.stringify(S));}catch(e){}}
+function exportData(){const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='QAQC_Backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{Object.assign(S,JSON.parse(ev.target.result));save();renderAll();alert('Imported successfully!');}catch(err){alert('Invalid file.');}};r.readAsText(f);e.target.value='';}
+function clearAll(){if(confirm('Clear ALL data?')){localStorage.removeItem('qaqc_eng_v1');location.reload();}}
+
+function renderAll(){
+  renderDailyTips();renderTasks();renderStats();renderActs();
+  renderCerts();renderMilestones();renderAchievements();renderPostHistory();
+  renderTipLibrary();renderNotes();renderLists();renderProjects();
+  if(S.ncrChat.length===0)initNcr();else renderNcrChat();
+  setTimeout(initWhiteboard,100);
+  if(document.getElementById('sub-list'))renderSubmittals();
+  if(document.getElementById('qa-history'))renderQAHistory();
+  if(document.getElementById('report-history'))renderReportHistory();
+  updateNavBadges();loadCfg();checkThursday();
+  const start=new Date(S.startDate||new Date());
+  const days=Math.max(1,Math.round((new Date()-start)/(1000*60*60*24))+1);
+  const el=document.getElementById('s-day');if(el)el.textContent=days;
+}
+
+// ═══ DAILY TIPS (5 per day) ═══
+function getTodayTips(){
+  const start=new Date(S.startDate||new Date());
+  const day=Math.max(1,Math.round((new Date()-start)/(1000*60*60*24))+1);
+  const cats=['HVDC','QA/QC','ISO','Career','Leadership'];
+  return cats.map(cat=>{
+    const tips=TIPS_DB[cat];
+    const idx=(day-1)%tips.length;
+    return {cat,tip:tips[idx],...CAT_COLORS[cat]};
+  });
+}
+
+function renderDailyTips(){
+  const el=document.getElementById('daily-tips-row');
+  const tips=getTodayTips();
+  el.innerHTML=tips.map(t=>`
+    <div class="tip-card" style="background:${t.bg};border-color:${t.ic}33;margin-bottom:0;">
+      <div class="tip-row">
+        <div class="tip-icon" style="background:${t.ic}22;">${t.icon}</div>
+        <div style="flex:1;">
+          <div class="tip-cat" style="color:${t.ic}">${t.cat}</div>
+          <div class="tip-txt">${t.tip}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══ TIP LIBRARY ═══
+function renderTipLibrary(){
+  const start=new Date(S.startDate||new Date());
+  const day=Math.max(1,Math.round((new Date()-start)/(1000*60*60*24))+1);
+  const cats=['HVDC','QA/QC','ISO','Career','Leadership'];
+  document.getElementById('tip-day-count').textContent=`Day ${day}`;
+  document.getElementById('tip-unlock-count').textContent=`${day*5} tips unlocked`;
+  const total=cats.reduce((a,c)=>a+TIPS_DB[c].length,0)*5;
+  const unlocked=Math.min(day*5,total);
+  document.getElementById('tip-prog-txt').textContent=`${unlocked} / ${total}`;
+  document.getElementById('tip-prog-bar').style.width=(unlocked/total*100).toFixed(1)+'%';
+
+  let html='';
+  cats.forEach(cat=>{
+    if(S.tipFilter!=='all'&&S.tipFilter!==cat)return;
+    const tips=TIPS_DB[cat];
+    const unlockCount=Math.min(day,tips.length);
+    const col=CAT_COLORS[cat];
+    html+=`<div style="margin-bottom:16px;"><div style="font-size:13px;font-weight:600;color:${col.ic};margin-bottom:8px;display:flex;align-items:center;gap:6px;">${col.icon} ${cat} <span style="font-size:11px;color:var(--text3);font-weight:400;">${unlockCount}/${tips.length} unlocked</span></div>`;
+    for(let i=0;i<unlockCount;i++){
+      html+=`<div class="tip-card" style="background:${col.bg};border-color:${col.ic}33;margin-bottom:8px;">
+        <div class="tip-row">
+          <div class="tip-icon" style="background:${col.ic}22;">${col.icon}</div>
+          <div style="flex:1;"><div class="tip-cat" style="color:${col.ic}">Day ${i+1} · ${cat}</div><div class="tip-txt">${tips[i]}</div></div>
+        </div></div>`;
+    }
+    html+='</div>';
+  });
+  document.getElementById('tip-library').innerHTML=html||'<div class="empty"><div class="empty-icon">🔒</div>No tips in this category yet.</div>';
+}
+
+function filterTips(cat,btn){
+  S.tipFilter=cat;
+  document.querySelectorAll('.tip-cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTipLibrary();
+}
+
+// ═══ TASKS ═══
+function getAutoTasks(){
+  const tasks=[];
+  const today=new Date().toISOString().slice(0,10);
+  S.activities.filter(a=>a.type==='NCR'&&a.status==='Open').slice(0,3).forEach(n=>{
+    const age=n.date?Math.floor((new Date()-new Date(n.date))/(1000*60*60*24)):0;
+    const overdue=n.class==='Major'&&age>2;
+    tasks.push({text:`Follow up NCR ${n.number||''} — ${(n.description||n.equipment||'').substring(0,50)}`,priority:overdue?'high':'med',cat:'NCR',auto:true,done:false,overdue});
+  });
+  S.activities.filter(a=>a.type==='RFI'&&a.status==='Open').slice(0,2).forEach(r=>
+    tasks.push({text:`Check: RFI ${r.number||''} — ${(r.subject||'').substring(0,50)}`,priority:'med',cat:'RFI',auto:true,done:false}));
+  return tasks;
+}
+
+function renderTasks(){
+  const el=document.getElementById('task-list');
+  const today=new Date().toISOString().slice(0,10);
+  const auto=getAutoTasks();
+  const overdue=S.tasks.filter(t=>!t.done&&t.date&&t.date<today);
+  const todayT=S.tasks.filter(t=>!t.done&&(!t.date||t.date===today));
+  const upcoming=S.tasks.filter(t=>!t.done&&t.date&&t.date>today);
+  const done=S.tasks.filter(t=>t.done).slice(0,3);
+  let html='';
+  if(auto.length||overdue.length){
+    if(overdue.length)html+=`<div style="font-size:10px;font-weight:600;color:var(--red);text-transform:uppercase;letter-spacing:0.5px;padding:4px 0 4px;">🔴 Overdue</div>`;
+    overdue.forEach((t,i)=>{html+=taskHTML(t,S.tasks.indexOf(t),false,true);});
+    if(auto.length)html+=`<div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:6px 0 4px;">⚙ Auto-generated</div>`;
+    auto.forEach((t,i)=>{html+=taskHTML(t,i,true,false);});
+  }
+  if(todayT.length){html+=`<div style="font-size:10px;font-weight:600;color:#B45309;text-transform:uppercase;letter-spacing:0.5px;padding:6px 0 4px;">🟡 Today</div>`;todayT.forEach(t=>{html+=taskHTML(t,S.tasks.indexOf(t),false,false);});}
+  if(upcoming.length){html+=`<div style="font-size:10px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:0.5px;padding:6px 0 4px;">🔵 Upcoming</div>`;upcoming.slice(0,3).forEach(t=>{html+=taskHTML(t,S.tasks.indexOf(t),false,false);});}
+  if(done.length){html+=`<div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:6px 0 4px;">✅ Done</div>`;done.forEach(t=>{html+=taskHTML(t,S.tasks.indexOf(t),false,false);});}
+  if(!html)html='<div class="empty"><div class="empty-icon">✅</div>No tasks. Add one above.</div>';
+  el.innerHTML=html;
+}
+
+function taskHTML(t,i,isAuto,isOverdue){
+  const age=t.date?`<span class="task-overdue">${isOverdue?'OVERDUE — ':''}</span>`:'';
+  return `<div class="task-item">
+    <div class="task-dot dot-${t.priority||'med'}"></div>
+    <div class="task-chk ${t.done?'done':''}" onclick="toggleTask(${i},${isAuto})">${t.done?'✓':''}</div>
+    <div class="task-body">
+      <div class="task-txt ${t.done?'striked':''}">${t.text}</div>
+      <div class="task-meta">${t.cat||''} ${t.date?'· Due: '+t.date:''} ${isAuto?'· auto':''} ${isOverdue?'<span style="color:var(--red);font-weight:600;">· OVERDUE</span>':''}</div>
+    </div>
+    ${!isAuto?`<div style="display:flex;gap:3px;"><button class="btn btn-xs btn-blue" onclick="editTask(${i})">✏️</button><button class="btn btn-xs btn-red" onclick="delTask(${i})">🗑</button></div>`:''}
+  </div>`;
+}
+
+function toggleTask(i,isAuto){if(isAuto)return;S.tasks[i].done=!S.tasks[i].done;save();renderTasks();}
+function delTask(i){S.tasks.splice(i,1);save();renderTasks();}
+function editTask(i){
+  const t=S.tasks[i];
+  document.getElementById('et-idx').value=i;
+  document.getElementById('et-txt').value=t.text||'';
+  document.getElementById('et-date').value=t.date||'';
+  document.getElementById('et-pri').value=t.priority||'med';
+  document.getElementById('et-cat').value=t.cat||'General';
+  openModal('modal-edit-task');
+}
+function saveEditTask(){
+  const i=parseInt(document.getElementById('et-idx').value);
+  S.tasks[i].text=document.getElementById('et-txt').value.trim();
+  S.tasks[i].date=document.getElementById('et-date').value;
+  S.tasks[i].priority=document.getElementById('et-pri').value;
+  S.tasks[i].cat=document.getElementById('et-cat').value;
+  save();closeModal('modal-edit-task');renderTasks();
+}
+function saveTask(){
+  const txt=document.getElementById('t-txt').value.trim();if(!txt)return;
+  S.tasks.push({text:txt,priority:document.getElementById('t-pri').value,cat:document.getElementById('t-cat').value,date:document.getElementById('t-date').value,done:false});
+  save();closeModal('modal-task');renderTasks();document.getElementById('t-txt').value='';
+}
+
+// ═══ STATS ═══
+function renderStats(){
+  const today=new Date().toISOString().slice(0,10);
+  const ncrs=S.activities.filter(a=>a.type==='NCR');
+  const openNCR=ncrs.filter(a=>a.status==='Open').length;
+  const closedNCR=ncrs.filter(a=>a.status==='Closed').length;
+  const overdue=ncrs.filter(a=>a.status==='Open'&&a.class==='Major'&&a.date&&Math.floor((new Date()-new Date(a.date))/(1000*60*60*24))>2).length;
+  document.getElementById('d-ncr').textContent=openNCR;
+  document.getElementById('d-rfi').textContent=S.activities.filter(a=>a.type==='RFI'&&a.status==='Open').length;
+  document.getElementById('d-mir').textContent=S.activities.filter(a=>a.type==='MIR').length;
+  document.getElementById('d-audit').textContent=S.activities.filter(a=>a.type==='Audit').length;
+  document.getElementById('s-ncr-t').textContent=ncrs.length;
+  document.getElementById('s-ncr-c').textContent=closedNCR;
+  document.getElementById('s-rfi').textContent=S.activities.filter(a=>a.type==='RFI').length;
+  document.getElementById('s-mir').textContent=S.activities.filter(a=>a.type==='MIR').length;
+  document.getElementById('s-sor').textContent=S.activities.filter(a=>a.type==='SOR').length;
+  document.getElementById('s-audit').textContent=S.activities.filter(a=>a.type==='Audit').length;
+  document.getElementById('s-overdue').textContent=overdue;
+  const start=new Date(S.startDate||new Date());
+  const days=Math.max(1,Math.round((new Date()-start)/(1000*60*60*24))+1);
+  document.getElementById('s-day').textContent=days;
+  if(ncrs.length>0){const rate=Math.round((closedNCR/ncrs.length)*100);document.getElementById('ncr-prog-wrap').style.display='block';document.getElementById('ncr-prog-txt').textContent=rate+'%';document.getElementById('ncr-prog-bar').style.width=rate+'%';}
+}
+
+function updateNavBadges(){
+  const open=S.activities.filter(a=>a.type==='NCR'&&a.status==='Open').length;
+  const nb=document.getElementById('nb-ncr');if(open>0){nb.textContent=open;nb.style.display='inline';}else nb.style.display='none';
+}
+
+function checkThursday(){
+  const day=new Date().getDay();
+  const thu=document.getElementById('nb-thu');
+  const rem=document.getElementById('thu-reminder');
+  if(day===4){if(thu)thu.style.display='inline';if(rem)rem.style.display='block';}
+  const rw=document.getElementById('report-week');
+  if(rw){const d=new Date();const mon=new Date(d);mon.setDate(d.getDate()-d.getDay()+1);rw.textContent=mon.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+}
+
+// ═══ ACTIVITIES ═══
+let curType='NCR';
+let editIdx=-1;
+function filterAct(f,btn){S.actFilter=f;document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderActs();}
+function openActModal(type,idx=-1){
+  curType=type;editIdx=idx;
+  document.getElementById('modal-act-title').textContent=(idx>=0?'Edit ':'Add ')+type;
+  document.getElementById('modal-act-fields').innerHTML=ACT_FIELDS[type];
+  if(idx>=0){
+    // Pre-fill all fields from existing activity
+    const a=S.activities[idx];
+    const sv=(id,val)=>{const e=document.getElementById(id);if(e&&val!==undefined&&val!==null)e.value=val;};
+    if(type==='NCR'){sv('f0',a.number);sv('f1',a.date);sv('f2',a.equipment);sv('f3',a.class);sv('f4',a.description);sv('f5',a.status);sv('f6',a.disposition);sv('f7',a.linked);sv('f8',a.dueDate);}
+    else if(type==='MIR'){sv('f0',a.number);sv('f1',a.date);sv('f2',a.material);sv('f3',a.supplier);sv('f4',a.result);sv('f5',a.status);sv('f6',a.notes_txt);}
+    else if(type==='RFI'){sv('f0',a.number);sv('f1',a.date);sv('f2',a.subject);sv('f3',a.issued);sv('f4',a.status);sv('f5',a.description);sv('f6',a.dueDate);}
+    else if(type==='SOR'){sv('f0',a.number);sv('f1',a.date);sv('f2',a.scope);sv('f3',a.status);sv('f4',a.notes_txt);}
+    else if(type==='Audit'){sv('f0',a.date);sv('f1',a.audit_type);sv('f2',a.area);sv('f3',a.findings);sv('f4',a.ncr_open);sv('f5',a.ncr_closed);sv('f6',a.status);}
+  } else {
+    const d=document.getElementById('f1')||document.getElementById('f0');
+    if(d&&d.type==='date')d.value=new Date().toISOString().slice(0,10);
+  }
+  openModal('modal-activity');
+}
+
+function saveAct(){
+  const g=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+  // Preserve existing notes if editing
+  const existingNotes=editIdx>=0&&S.activities[editIdx]?S.activities[editIdx].notes||[]:[];
+  const a={type:curType,notes:existingNotes};
+  if(curType==='NCR'){a.number=g('f0');a.date=g('f1');a.equipment=g('f2');a.class=g('f3');a.description=g('f4');a.status=g('f5');a.disposition=g('f6');a.linked=g('f7');a.dueDate=g('f8');}
+  else if(curType==='MIR'){a.number=g('f0');a.date=g('f1');a.material=g('f2');a.supplier=g('f3');a.result=g('f4');a.status=g('f5');a.notes_txt=g('f6');}
+  else if(curType==='RFI'){a.number=g('f0');a.date=g('f1');a.subject=g('f2');a.issued=g('f3');a.status=g('f4');a.description=g('f5');a.dueDate=g('f6');}
+  else if(curType==='SOR'){a.number=g('f0');a.date=g('f1');a.scope=g('f2');a.status=g('f3');a.notes_txt=g('f4');}
+  else if(curType==='Audit'){a.date=g('f0');a.audit_type=g('f1');a.area=g('f2');a.findings=parseInt(g('f3'))||0;a.ncr_open=parseInt(g('f4'))||0;a.ncr_closed=parseInt(g('f5'))||0;a.status=g('f6');}
+  if(!a.number&&!a.date){alert('Please fill number or date.');return;}
+  if(editIdx>=0){S.activities[editIdx]=a;}else{S.activities.unshift(a);}
+  editIdx=-1;
+  save();closeModal('modal-activity');renderActs();renderStats();updateNavBadges();renderTasks();renderAchievements();
+}
+
+function renderActs(){
+  const el=document.getElementById('act-list');
+  const q=(document.getElementById('act-search')||{}).value?.toLowerCase()||'';
+  let list=S.actFilter==='all'?S.activities:S.actFilter==='open'?S.activities.filter(a=>a.status==='Open'):S.activities.filter(a=>a.type===S.actFilter);
+  if(q)list=list.filter(a=>JSON.stringify(a).toLowerCase().includes(q));
+  if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">📂</div>No activities found.</div>';return;}
+  el.innerHTML=list.map(a=>{
+    const ri=S.activities.indexOf(a);
+    const today=new Date().toISOString().slice(0,10);
+    const age=a.date?Math.floor((new Date()-new Date(a.date))/(1000*60*60*24)):0;
+    let ageBadge='';
+    if(a.status==='Open'&&a.date){
+      if(a.class==='Major'&&age>2)ageBadge=`<span class="age-over">⚠ ${age}d OVERDUE</span>`;
+      else if(a.class==='Major'&&age>=1)ageBadge=`<span class="age-warn">⏱ ${age}d open</span>`;
+      else ageBadge=`<span class="age-ok">${age}d open</span>`;
+    }
+    const notesHtml=a.notes&&a.notes.length?`<div class="act-notes">${a.notes.map(n=>`<div class="note-item">📝 ${n.text} <span style="color:var(--text3);font-size:10px;">${n.date}</span></div>`).join('')}</div>`:'';
+    return `<div class="act-card">
+      <div class="act-top">
+        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+          <span class="badge ${AB[a.type]||'b-gray'}">${a.type}</span>
+          <span style="font-weight:600;">${a.number||a.date||''}</span>
+          ${a.status?`<span class="badge ${SB[a.status]||'b-gray'}">${a.status}</span>`:''}
+          ${a.class?`<span class="badge ${a.class==='Major'?'b-red':'b-yellow'}">${a.class}</span>`:''}
+          ${ageBadge}
+          ${a.linked?`<span style="font-size:11px;color:var(--text3);">🔗 ${a.linked}</span>`:''}
+        </div>
+        <div style="display:flex;gap:4px;">
+          <button class="btn btn-xs" onclick="addNoteToAct(${ri})" title="Add note">📝</button>
+          <button class="btn btn-xs btn-blue" onclick="openActModal('${a.type}',${ri})" title="Edit">✏️</button>
+          <button class="btn btn-xs" onclick="toggleActStatus(${ri})">⇄</button>
+          <button class="btn btn-xs btn-red" onclick="delAct(${ri})">🗑</button>
+        </div>
+      </div>
+      <div class="act-info">${getActInfo(a)}</div>
+      ${notesHtml}
+    </div>`;
+  }).join('');
+}
+
+function getActInfo(a){
+  const p=[];
+  if(a.date)p.push(`📅 ${a.date}`);
+  if(a.equipment)p.push(`🔧 ${a.equipment}`);
+  if(a.description)p.push(a.description.substring(0,80)+(a.description.length>80?'...':''));
+  if(a.subject)p.push(a.subject);if(a.material)p.push(a.material);
+  if(a.supplier)p.push(`Supplier: ${a.supplier}`);
+  if(a.result)p.push(`Result: ${a.result}`);
+  if(a.scope)p.push(a.scope.substring(0,70));
+  if(a.area)p.push(`Area: ${a.area}`);
+  if(a.findings!==undefined)p.push(`Findings: ${a.findings}`);
+  if(a.ncr_open!==undefined)p.push(`NCRs: ${a.ncr_open} open / ${a.ncr_closed||0} closed`);
+  if(a.disposition&&a.disposition!=='Pending')p.push(`Disposition: ${a.disposition}`);
+  if(a.dueDate)p.push(`Due: ${a.dueDate}`);
+  if(a.audit_type)p.push(a.audit_type);
+  return p.join(' · ')||'<span style="color:var(--text3);">No details</span>';
+}
+
+function toggleActStatus(i){const a=S.activities[i];a.status=a.status==='Open'?'Closed':'Open';save();renderActs();renderStats();updateNavBadges();renderTasks();}
+function delAct(i){if(confirm('Delete?')){S.activities.splice(i,1);save();renderActs();renderStats();updateNavBadges();renderTasks();}}
+function addNoteToAct(i){document.getElementById('act-note-idx').value=i;document.getElementById('act-note-inp').value='';openModal('modal-note-add');}
+function saveActNote(){
+  const i=parseInt(document.getElementById('act-note-idx').value);
+  const txt=document.getElementById('act-note-inp').value.trim();if(!txt)return;
+  if(!S.activities[i].notes)S.activities[i].notes=[];
+  S.activities[i].notes.push({text:txt,date:new Date().toLocaleDateString()});
+  save();closeModal('modal-note-add');renderActs();
+}
+
+// ═══ NCR AI ═══
+const NCR_Q=['What is the NCR number, and on which equipment and zone was the nonconformance found?',
+  'Describe exactly what was found. What did not conform, and what was the specified requirement or standard?',
+  'At what stage was it discovered? (incoming inspection / installation / pre-commissioning / commissioning)',
+  'Has this type of issue occurred before on this project or similar projects?',
+  'What is the proposed disposition? (Use As Is / Repair / Rework / Replace — and briefly why)'];
+
+function initNcr(){S.ncrChat=[];S.ncrStep=0;addMsg('sys',`Welcome. I will ask you <strong>${NCR_Q.length} targeted questions</strong> then generate a complete NCR analysis.<br><br><strong>Question 1/${NCR_Q.length}:</strong> ${NCR_Q[0]}`);renderNcrChat();}
+function resetNcr(){S.ncrChat=[];S.ncrStep=0;save();initNcr();}
+function addMsg(role,html){S.ncrChat.push({role,html});}
+function renderNcrChat(){const el=document.getElementById('ncr-chat');el.innerHTML=S.ncrChat.map(m=>`<div class="chat-msg msg-${m.role}">${m.html}</div>`).join('');el.scrollTop=el.scrollHeight;}
+function sendNcr(){
+  const inp=document.getElementById('ncr-inp');const v=inp.value.trim();if(!v)return;
+  addMsg('user',v);inp.value='';S.ncrStep++;
+  if(S.ncrStep<NCR_Q.length){addMsg('sys',`<strong>Question ${S.ncrStep+1}/${NCR_Q.length}:</strong> ${NCR_Q[S.ncrStep]}`);renderNcrChat();save();}
+  else{addMsg('sys','Analyzing responses and generating NCR analysis...');renderNcrChat();genNcrAnalysis();}
+}
+function genNcrAnalysis(){
+  const answers=S.ncrChat.filter(m=>m.role==='user').map(m=>m.html);
+  const prompt=`You are a Senior QA/QC Engineer on an HVDC VSC 3000MW converter station (Alfanar, Saudi Arabia, SEC standard).
+Q1 (NCR number & equipment): ${answers[0]||''}
+Q2 (What was found / required): ${answers[1]||''}
+Q3 (Stage of discovery): ${answers[2]||''}
+Q4 (Occurred before): ${answers[3]||''}
+Q5 (Proposed disposition): ${answers[4]||''}
+
+Generate a professional NCR analysis with these 4 sections:
+**1. ROOT CAUSE ANALYSIS** — use 5-Why method, specific to this equipment and stage
+**2. IMMEDIATE CORRECTIVE ACTION** — practical step-by-step
+**3. PREVENTIVE ACTION** — systemic fix to prevent recurrence
+**4. GUIDANCE SUMMARY** — 2-3 sentences: why it happens, what is most effective, where to watch for it
+
+Be concise, technical, field-practical.`;
+  callAI(prompt,1000,text=>{
+    S.ncrChat.pop();addMsg('ai',text.replace(/\n/g,'<br>')+'<br><br><em style="color:var(--text3);font-size:11px;">Copy into your NCR form. Click New NCR to start another.</em>');
+    save();renderNcrChat();
+  },err=>{S.ncrChat.pop();addMsg('sys',aiErr(err));save();renderNcrChat();});
+}
+
+// ═══ LINKEDIN ═══
+function genPost(){
+  const type=document.getElementById('post-type').value;
+  const topic=document.getElementById('post-topic').value;
+  const el=document.getElementById('post-output');
+  el.innerHTML='<div class="alert al-blue">✨ Generating post...</div>';
+  const recent=S.activities.slice(0,5).map(a=>`${a.type} ${a.number||''}: ${a.description||a.subject||a.material||a.area||''}`).join('; ');
+  const typeMap={weekly:'weekly professional update',monthly:'monthly career/project insight',hvdc:'HVDC VSC technical insight',iso:'ISO Quality Management insight',career:'career development reflection',leadership:'quality leadership lesson'};
+  const prompt=`Write a LinkedIn post for ${S.cfg.name}, ${S.cfg.role} at ${S.cfg.company} on ${S.cfg.project} in Saudi Arabia. ISO 9001:2015 Lead Auditor certified.
+Post type: ${typeMap[type]||type}
+${topic?`Topic: ${topic}`:`Recent work: ${recent||'HVDC VSC QC, NCR management, SEC standards'}`}
+Requirements: Hook opening (no clichés), specific practical insight, useful to QA/QC/electrical engineers, ends with question/CTA, 3-5 hashtags, 150-220 words, sounds like real expert, no confidential details.
+Return ONLY the post text.`;
+  callAI(prompt,600,text=>{
+    S.lastPost={type:typeMap[type],date:new Date().toLocaleDateString(),preview:text.substring(0,100)+'...',full:text};
+    el.innerHTML=`<div class="card"><div class="stripe s-blue"></div><div class="card-title">✅ Generated Post</div>
+    <div class="post-box" id="gen-post">${text}</div>
+    <div class="btn-group"><button class="btn btn-primary btn-sm" onclick="copyPost()">📋 Copy</button><button class="btn btn-green btn-sm" onclick="savePost()">💾 Save</button><button class="btn btn-sm" onclick="genPost()">↺ Regen</button></div>
+    <div id="copy-ok" style="display:none;margin-top:7px;" class="alert al-green">✓ Copied!</div></div>`;
+  },err=>{el.innerHTML=`<div class="alert al-red">${aiErr(err)}</div>`;});
+}
+function copyPost(){const e=document.getElementById('gen-post');if(e){navigator.clipboard.writeText(e.textContent);document.getElementById('copy-ok').style.display='block';setTimeout(()=>document.getElementById('copy-ok').style.display='none',3000);}}
+function savePost(){if(S.lastPost){S.posts.unshift(S.lastPost);save();renderPostHistory();}}
+function renderPostHistory(){const el=document.getElementById('post-history');if(!S.posts.length){el.innerHTML='<p style="font-size:13px;color:var(--text3);">No posts saved yet.</p>';return;}el.innerHTML=S.posts.slice(0,8).map((p,i)=>`<div style="padding:9px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;"><div style="flex:1;"><div style="display:flex;gap:7px;margin-bottom:3px;"><span class="badge b-navy">${p.type}</span><span style="font-size:10px;color:var(--text3);">${p.date}</span></div><div style="font-size:12px;color:var(--text2);">${p.preview}</div></div><button class="btn btn-xs btn-red" onclick="delPost(${i})">🗑</button></div>`).join('');}
+function delPost(i){S.posts.splice(i,1);save();renderPostHistory();}
+
+// ═══ WEEKLY REPORT ═══
+function genReport(){
+  const now=new Date();
+  const mon=new Date(now);mon.setDate(now.getDate()-now.getDay()+1);
+  const week=`${mon.toLocaleDateString('en-US',{month:'short',day:'numeric'})} – ${now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`;
+  const weekActs=S.activities.filter(a=>{if(!a.date)return false;const d=new Date(a.date);return d>=mon&&d<=now;});
+  const openNCR=S.activities.filter(a=>a.type==='NCR'&&a.status==='Open').length;
+  const closedNCR=S.activities.filter(a=>a.type==='NCR'&&a.status==='Closed').length;
+  const totalNCR=S.activities.filter(a=>a.type==='NCR').length;
+  const overdue=S.activities.filter(a=>a.type==='NCR'&&a.status==='Open'&&a.class==='Major'&&a.date&&Math.floor((new Date()-new Date(a.date))/(1000*60*60*24))>2).length;
+  const openTasks=S.tasks.filter(t=>!t.done).length;
+  let report=`📊 WEEKLY QA/QC REPORT\n`;
+  report+=`Project: ${S.cfg.project}\n`;
+  report+=`Engineer: ${S.cfg.name} — ${S.cfg.role}\n`;
+  report+=`Week: ${week}\n`;
+  report+=`Generated: ${now.toLocaleDateString()}\n\n`;
+  report+=`━━━━━━━━━━━━━━━━━━━━━━\n`;
+  report+=`📋 ACTIVITY THIS WEEK\n`;
+  report+=`━━━━━━━━━━━━━━━━━━━━━━\n`;
+  if(weekActs.length===0)report+=`No activities logged this week.\n`;
+  else weekActs.forEach(a=>report+=`• ${a.type} ${a.number||''}: ${a.description||a.subject||a.material||a.area||''} [${a.status}]\n`);
+  report+=`\n━━━━━━━━━━━━━━━━━━━━━━\n`;
+  report+=`📊 PROJECT STATUS\n`;
+  report+=`━━━━━━━━━━━━━━━━━━━━━━\n`;
+  report+=`Total NCRs: ${totalNCR} | Open: ${openNCR} | Closed: ${closedNCR}\n`;
+  if(overdue>0)report+=`⚠ Overdue Major NCRs: ${overdue}\n`;
+  report+=`Total RFIs: ${S.activities.filter(a=>a.type==='RFI').length} | Open: ${S.activities.filter(a=>a.type==='RFI'&&a.status==='Open').length}\n`;
+  report+=`Total MIRs: ${S.activities.filter(a=>a.type==='MIR').length}\n`;
+  report+=`Audits completed: ${S.activities.filter(a=>a.type==='Audit').length}\n`;
+  report+=`NCR Closure Rate: ${totalNCR>0?Math.round((closedNCR/totalNCR)*100):0}%\n`;
+  report+=`\n━━━━━━━━━━━━━━━━━━━━━━\n`;
+  report+=`✅ OPEN TASKS: ${openTasks}\n`;
+  report+=`━━━━━━━━━━━━━━━━━━━━━━\n`;
+  const openT=S.tasks.filter(t=>!t.done).slice(0,5);
+  openT.forEach(t=>report+=`• [${(t.priority||'med').toUpperCase()}] ${t.text}\n`);
+  report+=`\n— ${S.cfg.name}, ${S.cfg.role} | ${S.cfg.company}`;
+  document.getElementById('report-body').textContent=report;
+  S.reports.unshift({week,date:now.toLocaleDateString(),report});
+  save();renderReportHistory();
+}
+function copyReport(){const t=document.getElementById('report-body').textContent;navigator.clipboard.writeText(t);alert('Report copied!');}
+function sendReportWA(){const t=document.getElementById('report-body').textContent;navigator.clipboard.writeText(t);alert('Report copied — paste into WhatsApp.');}
+function sendReportGmail(){const t=document.getElementById('report-body').textContent;const s=encodeURIComponent('Weekly QA/QC Report — '+new Date().toLocaleDateString());window.open(`https://mail.google.com/mail/?view=cm&su=${s}&body=${encodeURIComponent(t)}`,'_blank');}
+function renderReportHistory(){const el=document.getElementById('report-history');if(!S.reports)S.reports=[];if(!S.reports.length){el.innerHTML='<p style="font-size:13px;color:var(--text3);">No reports generated yet.</p>';return;}el.innerHTML=S.reports.slice(0,5).map((r,i)=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;"><div style="font-size:13px;">📊 Week of ${r.week}</div><div style="display:flex;gap:6px;"><span style="font-size:11px;color:var(--text3);">${r.date}</span><button class="btn btn-xs btn-red" onclick="delReport(${i})">🗑</button></div></div>`).join('');}
+function delReport(i){S.reports.splice(i,1);save();renderReportHistory();}
+
+// ═══ NOTEBOOK ═══
+function filterNotes(f,btn){S.noteFilter=f;document.querySelectorAll('#note-filter-tabs .ftab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderNotes();}
+function saveNote(pinned=false){
+  const txt=document.getElementById('note-inp').value.trim();if(!txt)return;
+  S.notes.unshift({text:txt,cat:document.getElementById('note-cat').value,date:new Date().toLocaleDateString(),pinned:!!pinned});
+  save();renderNotes();document.getElementById('note-inp').value='';
+}
+function renderNotes(){
+  const el=document.getElementById('note-list');
+  let list=S.noteFilter==='all'?S.notes:S.noteFilter==='pinned'?S.notes.filter(n=>n.pinned):S.notes.filter(n=>n.cat===S.noteFilter);
+  list=[...list.filter(n=>n.pinned),...list.filter(n=>!n.pinned)];
+  if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">📝</div>No notes yet. Capture your first idea above.</div>';return;}
+  el.innerHTML=list.map((n,i)=>{
+    const ri=S.notes.indexOf(n);
+    const col=CAT_COLORS[n.cat]||{bg:'#F1F5F9',ic:'#475569'};
+    return `<div class="note-card ${n.pinned?'pinned':''}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+        <div style="flex:1;">
+          <div style="display:flex;gap:6px;margin-bottom:5px;align-items:center;">
+            ${n.pinned?'<span>📌</span>':''}
+            <span class="badge" style="background:${col.bg};color:${col.ic};border-color:${col.ic}33;">${n.cat}</span>
+            <span style="font-size:10px;color:var(--text3);">${n.date}</span>
+          </div>
+          <div style="font-size:13px;line-height:1.6;">${n.text}</div>
+        </div>
+        <div style="display:flex;gap:4px;flex-shrink:0;">
+          <button class="btn btn-xs btn-yellow" onclick="convertToTask(${ri})" title="Convert to task">→ Task</button>
+          <button class="btn btn-xs btn-blue" onclick="convertToListItem(${ri})" title="Add to list">→ List</button>
+          <button class="btn btn-xs" onclick="togglePin(${ri})" title="Toggle pin">${n.pinned?'📌':'📍'}</button>
+          <button class="btn btn-xs btn-red" onclick="delNote(${ri})">🗑</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function togglePin(i){S.notes[i].pinned=!S.notes[i].pinned;save();renderNotes();}
+function delNote(i){S.notes.splice(i,1);save();renderNotes();}
+function convertToTask(i){
+  const n=S.notes[i];
+  S.tasks.push({text:n.text.substring(0,100),priority:'med',cat:n.cat,date:'',done:false});
+  save();renderTasks();
+  showToast('Note converted to task! ✅');
+}
+function convertToListItem(i){
+  const n=S.notes[i];
+  if(!S.lists.length){alert('Create a list first in My Lists section.');return;}
+  const listNames=S.lists.map((l,idx)=>`${idx+1}. ${l.title}`).join('\n');
+  const choice=prompt(`Choose list number:\n${listNames}`);
+  const idx=parseInt(choice)-1;
+  if(isNaN(idx)||idx<0||idx>=S.lists.length){alert('Invalid choice.');return;}
+  S.lists[idx].items.push({text:n.text.substring(0,120),done:false});
+  save();renderLists();
+  showToast('Note added to "'+S.lists[idx].title+'" ✅');
+}
+function showToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.2);transition:opacity 0.3s;';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',2500);
+}
+
+function saveList(){const t=document.getElementById('list-title').value.trim();if(!t)return;S.lists.push({title:t,items:[]});save();closeModal('modal-list');renderLists();}
+function renderLists(){
+  const el=document.getElementById('my-lists');
+  if(!S.lists.length){el.innerHTML='<p style="font-size:13px;color:var(--text3);">No lists yet. Create one above.</p>';return;}
+  el.innerHTML=S.lists.map((l,li)=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-hdr">
+        <div class="card-title">📋 ${l.title}</div>
+        <div style="display:flex;gap:5px;">
+          <button class="btn btn-xs btn-primary" onclick="addListItem(${li})">+ Item</button>
+          <button class="btn btn-xs btn-red" onclick="delList(${li})">🗑</button>
+        </div>
+      </div>
+      <div id="list-items-${li}">
+        ${l.items.map((item,ii)=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+          <div class="task-chk ${item.done?'done':''}" onclick="toggleListItem(${li},${ii})">${item.done?'✓':''}</div>
+          <span style="font-size:13px;${item.done?'text-decoration:line-through;color:var(--text3);':''}">${item.text}</span>
+          <button class="btn btn-xs btn-red" style="margin-left:auto;" onclick="delListItem(${li},${ii})">🗑</button>
+        </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function addListItem(li){const t=prompt('New item:');if(!t)return;S.lists[li].items.push({text:t,done:false});save();renderLists();}
+function toggleListItem(li,ii){S.lists[li].items[ii].done=!S.lists[li].items[ii].done;save();renderLists();}
+function delListItem(li,ii){S.lists[li].items.splice(ii,1);save();renderLists();}
+function delList(li){if(confirm('Delete list?')){S.lists.splice(li,1);save();renderLists();}}
+
+// ═══ CERTS & MILESTONES ═══
+const SC={'Completed':'✅','In Progress':'🔵','Planned':'⬜'};
+const SBC={'Completed':'b-green','In Progress':'b-blue','Planned':'b-gray'};
+function renderCerts(){const el=document.getElementById('cert-list');el.innerHTML=S.certs.map((c,i)=>`<div class="task-item" style="margin-bottom:6px;"><span style="font-size:16px;">${SC[c.status]||'⬜'}</span><div class="task-body"><div class="task-txt">${c.name}</div><div class="task-meta">Target: ${c.year}</div></div><span class="badge ${SBC[c.status]||'b-gray'}">${c.status}</span><button class="btn btn-xs" onclick="cycleCert(${i})" title="Toggle">⇄</button><button class="btn btn-xs btn-red" onclick="delCert(${i})">🗑</button></div>`).join('');}
+function cycleCert(i){const s=['Planned','In Progress','Completed'];S.certs[i].status=s[(s.indexOf(S.certs[i].status)+1)%3];save();renderCerts();}
+function delCert(i){S.certs.splice(i,1);save();renderCerts();}
+function saveCert(){const n=document.getElementById('c-name').value.trim();if(!n)return;S.certs.push({name:n,status:document.getElementById('c-status').value,year:document.getElementById('c-year').value});save();closeModal('modal-cert');renderCerts();}
+
+function renderMilestones(){const el=document.getElementById('ms-list');if(!S.milestones.length){el.innerHTML='<p style="font-size:13px;color:var(--text3);padding:6px 0;">No milestones yet.</p>';return;}el.innerHTML=S.milestones.map((m,i)=>`<div class="ms-item"><span class="ms-star">⭐</span><div style="flex:1;"><div style="font-size:13px;font-weight:500;">${m.text}</div><div style="font-size:11px;color:var(--text3);">${m.date} · ${m.cat}</div></div><button class="btn btn-xs btn-red" onclick="delMs(${i})">🗑</button></div>`).join('');}
+function delMs(i){S.milestones.splice(i,1);save();renderMilestones();}
+function saveMs(){const t=document.getElementById('ms-txt').value.trim();if(!t)return;S.milestones.unshift({text:t,date:document.getElementById('ms-date').value,cat:document.getElementById('ms-cat').value});save();closeModal('modal-ms');renderMilestones();}
+
+function renderAchievements(){
+  const now=new Date();const m=now.getMonth();const y=now.getFullYear();
+  const tm=S.activities.filter(a=>{if(!a.date)return false;const d=new Date(a.date);return d.getMonth()===m&&d.getFullYear()===y;});
+  document.getElementById('m-ncr').textContent=tm.filter(a=>a.type==='NCR').length;
+  document.getElementById('m-closed').textContent=tm.filter(a=>a.type==='NCR'&&a.status==='Closed').length;
+  document.getElementById('m-audit').textContent=tm.filter(a=>a.type==='Audit').length;
+  document.getElementById('m-rfi').textContent=tm.filter(a=>a.type==='RFI'&&a.status!=='Open').length;
+}
+
+// ═══ PAST PROJECTS ═══
+function renderProjects(){
+  const el=document.getElementById('proj-list');
+  if(!S.projects.length){el.innerHTML='<div class="empty"><div class="empty-icon">🏗️</div>No past projects added yet.</div>';return;}
+  el.innerHTML=S.projects.map((p,i)=>`<div class="card">
+    <div class="stripe s-blue"></div>
+    <div class="card-hdr">
+      <div>
+        <div style="font-weight:600;font-size:14px;">${p.name}</div>
+        <div style="font-size:12px;color:var(--text2);">${p.company} · ${p.role} · ${p.start||''} – ${p.end||'Present'}</div>
+      </div>
+      <button class="btn btn-xs btn-red" onclick="delProj(${i})">🗑</button>
+    </div>
+    <div class="g4" style="margin-bottom:10px;">
+      <div class="stat"><div class="stat-val c-green">${p.audits||0}</div><div class="stat-label">Audits</div></div>
+      <div class="stat"><div class="stat-val c-red">${p.ncrs||0}</div><div class="stat-label">NCRs</div></div>
+      <div class="stat"><div class="stat-val c-navy">${p.closed||0}</div><div class="stat-label">Closed</div></div>
+      <div class="stat"><div class="stat-val c-blue">${p.docs||0}</div><div class="stat-label">MIR/RFI</div></div>
+    </div>
+    ${p.scale?`<div style="font-size:12px;color:var(--text2);margin-bottom:5px;">📐 Scale: ${p.scale}</div>`:''}
+    ${p.achievements?`<div style="font-size:12px;color:var(--text2);background:var(--green-light);padding:8px 10px;border-radius:6px;">⭐ ${p.achievements}</div>`:''}
+  </div>`).join('');
+}
+function saveProj(){
+  const g=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+  S.projects.unshift({name:g('pj-name'),company:g('pj-company'),start:g('pj-start'),end:g('pj-end'),audits:parseInt(g('pj-audits'))||0,ncrs:parseInt(g('pj-ncrs'))||0,closed:parseInt(g('pj-closed'))||0,docs:parseInt(g('pj-docs'))||0,scale:g('pj-scale'),achievements:g('pj-ach'),role:g('pj-role')});
+  save();closeModal('modal-proj');renderProjects();
+}
+function delProj(i){if(confirm('Delete project?')){S.projects.splice(i,1);save();renderProjects();}}
+
+// ═══ SETTINGS ═══
+// ═══ Q&A ═══
+let currentQA=null;
+function askQA(){
+  const q=document.getElementById('qa-input').value.trim();
+  if(!q){alert('Please enter a question.');return;}
+  document.getElementById('qa-answer-wrap').style.display='none';
+  document.getElementById('qa-answer').textContent='Thinking...';
+  document.getElementById('qa-answer-wrap').style.display='block';
+  const prompt=`You are a senior QA/QC Electrical Engineer with 15+ years experience on HVDC VSC converter stations, ISO management systems, and electrical power projects in Saudi Arabia (SEC standards).
+
+Answer this question from a QA/QC Engineer working on an HVDC 3000MW VSC project:
+
+"${q}"
+
+Be practical, specific, and field-oriented. Use examples where helpful. Format clearly with sections if needed. Maximum 400 words.`;
+  callAI(prompt,800,text=>{
+    document.getElementById('qa-answer').textContent=text;
+    currentQA={q,a:text,date:new Date().toLocaleDateString()};
+  },err=>{document.getElementById('qa-answer').textContent=aiErr(err).replace(/<[^>]*>/g,'');});
+}
+function saveQA(){
+  if(!currentQA)return;
+  if(!S.qaHistory)S.qaHistory=[];
+  S.qaHistory.unshift(currentQA);
+  currentQA=null;
+  save();renderQAHistory();
+  document.getElementById('qa-answer-wrap').style.display='none';
+  document.getElementById('qa-input').value='';
+  showToast('Answer saved to history ✅');
+}
+function discardQA(){
+  currentQA=null;
+  document.getElementById('qa-answer-wrap').style.display='none';
+  document.getElementById('qa-input').value='';
+}
+function renderQAHistory(){
+  if(!S.qaHistory)S.qaHistory=[];
+  const el=document.getElementById('qa-history');
+  const q=(document.getElementById('qa-search')||{}).value?.toLowerCase()||'';
+  let list=S.qaHistory;
+  if(q)list=list.filter(h=>(h.q+h.a).toLowerCase().includes(q));
+  if(!list.length){el.innerHTML='<p style="font-size:13px;color:var(--text3);padding:8px 0;">No saved Q&As yet.</p>';return;}
+  el.innerHTML=list.map((h,i)=>`
+    <div style="padding:12px 0;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:600;color:var(--navy);">Q: ${h.q}</div>
+        <div style="display:flex;gap:5px;flex-shrink:0;">
+          <span style="font-size:10px;color:var(--text3);">${h.date}</span>
+          <button class="btn btn-xs btn-red" onclick="delQA(${i})">🗑</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;background:var(--surface2);padding:8px 10px;border-radius:6px;max-height:120px;overflow:hidden;">${h.a.substring(0,300)}${h.a.length>300?'...':''}</div>
+    </div>`).join('');
+}
+function delQA(i){S.qaHistory.splice(i,1);save();renderQAHistory();}
+
+// ═══ SUBMITTALS ═══
+let subFilter='all';
+function filterSub(f,btn){subFilter=f;document.querySelectorAll('#panel-submittals .ftab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderSubmittals();}
+
+function renderSubmittals(){
+  if(!S.submittals)S.submittals=[];
+  const el=document.getElementById('sub-list');
+  const q=(document.getElementById('sub-search')||{}).value?.toLowerCase()||'';
+  let list=subFilter==='all'?S.submittals:S.submittals.filter(s=>s.status===subFilter);
+  if(q)list=list.filter(s=>JSON.stringify(s).toLowerCase().includes(q));
+  // Update summary
+  document.getElementById('sub-total').textContent=S.submittals.length;
+  document.getElementById('sub-approved').textContent=S.submittals.filter(s=>s.status==='Approved').length;
+  document.getElementById('sub-review').textContent=S.submittals.filter(s=>s.status==='Under Review').length;
+  document.getElementById('sub-rejected').textContent=S.submittals.filter(s=>s.status==='Rejected').length;
+  if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">📁</div>No submittals found.</div>';return;}
+  const SBS={'Approved':'b-green','Under Review':'b-yellow','Rejected':'b-red','Resubmit Required':'b-orange'};
+  el.innerHTML=list.map((s,i)=>{
+    const ri=S.submittals.indexOf(s);
+    return `<div class="act-card">
+      <div class="act-top">
+        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+          <span class="badge b-navy">${s.number||''}</span>
+          <span style="font-weight:600;font-size:13px;">${s.title||''}</span>
+          <span class="badge ${SBS[s.status]||'b-gray'}">${s.status||''}</span>
+          ${s.revision?`<span class="badge b-gray">Rev ${s.revision}</span>`:''}
+        </div>
+        <div style="display:flex;gap:4px;">
+          <button class="btn btn-xs btn-blue" onclick="editSubmittal(${ri})">✏️</button>
+          <button class="btn btn-xs btn-red" onclick="delSubmittal(${ri})">🗑</button>
+        </div>
+      </div>
+      <div class="act-info">
+        ${s.date?`📅 Submitted: ${s.date}`:''}
+        ${s.discipline?` · ${s.discipline}`:''}
+        ${s.responseDate?` · Response: ${s.responseDate}`:''}
+        ${s.rejectionReason?`<div style="margin-top:4px;color:var(--red);font-size:12px;">❌ ${s.rejectionReason}</div>`:''}
+        ${s.notes?`<div style="margin-top:4px;color:var(--text2);font-size:12px;">📝 ${s.notes}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let editSubIdx=-1;
+function editSubmittal(i){
+  editSubIdx=i;const s=S.submittals[i];
+  const sv=(id,val)=>{const e=document.getElementById(id);if(e&&val!==undefined)e.value=val;};
+  sv('sub-number',s.number);sv('sub-title',s.title);sv('sub-rev',s.revision);
+  sv('sub-discipline',s.discipline);sv('sub-date',s.date);sv('sub-status',s.status);
+  sv('sub-resp-date',s.responseDate);sv('sub-rejection',s.rejectionReason);sv('sub-notes',s.notes);
+  document.getElementById('modal-sub-title').textContent='Edit Submittal';
+  openModal('modal-submittal');
+}
+
+function saveSubmittal(){
+  const g=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+  const s={number:g('sub-number'),title:g('sub-title'),revision:g('sub-rev'),discipline:g('sub-discipline'),date:g('sub-date'),status:g('sub-status'),responseDate:g('sub-resp-date'),rejectionReason:g('sub-rejection'),notes:g('sub-notes')};
+  if(!s.title){alert('Please enter a title.');return;}
+  if(!S.submittals)S.submittals=[];
+  if(editSubIdx>=0){S.submittals[editSubIdx]=s;}else{S.submittals.unshift(s);}
+  editSubIdx=-1;
+  save();closeModal('modal-submittal');renderSubmittals();
+  document.getElementById('modal-sub-title').textContent='Add Submittal';
+}
+function delSubmittal(i){if(confirm('Delete submittal?')){S.submittals.splice(i,1);save();renderSubmittals();}}
+
+function loadCfg(){
+  if(S.cfg.name)document.getElementById('cfg-name').value=S.cfg.name;
+  if(S.cfg.company)document.getElementById('cfg-company').value=S.cfg.company;
+  if(S.cfg.project)document.getElementById('cfg-project').value=S.cfg.project;
+  if(S.cfg.email)document.getElementById('cfg-email').value=S.cfg.email;
+  if(S.cfg.role)document.getElementById('cfg-role').value=S.cfg.role;
+  if(S.cfg.apiKey)document.getElementById('cfg-apikey').value=S.cfg.apiKey;
+}
+function saveSettings(){
+  S.cfg={name:document.getElementById('cfg-name').value,company:document.getElementById('cfg-company').value,project:document.getElementById('cfg-project').value,email:document.getElementById('cfg-email').value,role:document.getElementById('cfg-role').value,apiKey:document.getElementById('cfg-apikey').value};
+  save();const el=document.getElementById('cfg-saved');el.style.display='block';setTimeout(()=>el.style.display='none',2500);
+}
+
+// ═══ DIGEST ═══
+function buildDigest(){
+  const d=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const auto=getAutoTasks();const manual=S.tasks.filter(t=>!t.done);
+  const all=[...auto,...manual];
+  const openNCR=S.activities.filter(a=>a.type==='NCR'&&a.status==='Open').length;
+  const openRFI=S.activities.filter(a=>a.type==='RFI'&&a.status==='Open').length;
+  const overdue=S.activities.filter(a=>a.type==='NCR'&&a.status==='Open'&&a.class==='Major'&&a.date&&Math.floor((new Date()-new Date(a.date))/(1000*60*60*24))>2).length;
+  let msg=`🛡️ QA/QC Morning Digest — ${d}\n\n`;
+  msg+=`📊 STATUS:\n• Open NCRs: ${openNCR}${overdue>0?' ⚠ '+overdue+' OVERDUE':''}\n• Open RFIs: ${openRFI}\n\n`;
+  msg+=`✅ TODAY'S TASKS (${all.length}):\n`;
+  all.forEach((t,i)=>{msg+=`${i+1}. [${(t.priority||'med').toUpperCase()}] ${t.text}\n`;});
+  msg+=`\n🏗️ ${S.cfg.project}\n👤 ${S.cfg.name} · ${S.cfg.role}`;
+  return msg;
+}
+function copyWhatsApp(){navigator.clipboard.writeText(buildDigest());showDA('✓ Copied! Paste into WhatsApp.','al-green');}
+function openGmail(){const b=encodeURIComponent(buildDigest());const s=encodeURIComponent('QA/QC Digest — '+new Date().toLocaleDateString());const to=S.cfg.email?encodeURIComponent(S.cfg.email):'';window.open(`https://mail.google.com/mail/?view=cm${to?'&to='+to:''}&su=${s}&body=${b}`,'_blank');showDA('✓ Gmail opened.','al-green');}
+function showDA(msg,cls){const el=document.getElementById('digest-alert');el.className='alert '+cls;el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',3000);}
+
+// ═══ AI HELPER ═══
+function callAI(prompt,maxTokens,onSuccess,onError){
+  const key=S.cfg.apiKey||'';
+  if(!key){onError&&onError('no_key');return;}
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
+  }).then(r=>r.json()).then(data=>{
+    if(data.error){onError&&onError(data.error.message);return;}
+    onSuccess(data.content&&data.content[0]?data.content[0].text:'No response.');
+  }).catch(err=>{onError&&onError(err.toString());});
+}
+function aiErr(err){
+  if(!S.cfg.apiKey||err==='no_key')return '🔑 <strong>API key required.</strong> Go to <a onclick="nav(\'settings\',document.querySelectorAll(\'.nav-item\')[9])" style="cursor:pointer;color:var(--blue);">Settings → AI Setup</a> and enter your Anthropic API key.';
+  return '⚠️ AI error: '+(err||'Unknown')+'. Check your API key in Settings.';
+}
+
+// ═══ MODAL & NAV ═══
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function navToFilter(type){
+  // Navigate to activities panel and apply filter
+  S.actFilter=type;
+  // Activate activities nav item
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-activities').classList.add('active');
+  // Find and activate the activities nav button
+  document.querySelectorAll('.nav-item').forEach(b=>{if(b.textContent.trim().startsWith('Activities'))b.classList.add('active');});
+  // Set the filter tab
+  document.querySelectorAll('.ftab').forEach(b=>{
+    b.classList.remove('active');
+    const label=b.textContent.trim();
+    if(type==='all'&&label==='All')b.classList.add('active');
+    else if(type==='open'&&label==='⚠ Open')b.classList.add('active');
+    else if(label===type)b.classList.add('active');
+  });
+  renderActs();
+}
+
+function nav(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+// ═══ WHITEBOARD ═══
+let wbTool='pencil', wbDrawing=false, wbCtx=null, wbCanvas=null, wbNodes=[], wbStickies=[];
+let wbLastX=0,wbLastY=0,wbColor='#1A56DB',wbSize=3;
+
+function initWhiteboard(){
+  wbCanvas=document.getElementById('whiteboard');
+  if(!wbCanvas)return;
+  wbCtx=wbCanvas.getContext('2d');
+  // Restore saved drawing
+  if(S.wbData){const img=new Image();img.onload=()=>wbCtx.drawImage(img,0,0);img.src=S.wbData;}
+  wbCanvas.addEventListener('mousedown',wbStart);
+  wbCanvas.addEventListener('mousemove',wbMove);
+  wbCanvas.addEventListener('mouseup',wbEnd);
+  wbCanvas.addEventListener('mouseleave',wbEnd);
+  wbCanvas.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];const r=wbCanvas.getBoundingClientRect();wbStart({offsetX:(t.clientX-r.left)*(wbCanvas.width/r.width),offsetY:(t.clientY-r.top)*(wbCanvas.height/r.height)});},{passive:false});
+  wbCanvas.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];const r=wbCanvas.getBoundingClientRect();wbMove({offsetX:(t.clientX-r.left)*(wbCanvas.width/r.width),offsetY:(t.clientY-r.top)*(wbCanvas.height/r.height)});},{passive:false});
+  wbCanvas.addEventListener('touchend',wbEnd);
+}
+
+function setWbTool(t){
+  wbTool=t;
+  const hints={pencil:'✏️ Freehand Draw — click and drag to draw',sticky:'📌 Sticky Note — click anywhere on the canvas to add a note',mindmap:'🔵 Mind Map — click to add nodes, they connect automatically'};
+  document.getElementById('wb-tool-hint').textContent=hints[t]||'';
+  document.querySelectorAll('[id^="wb-"]').forEach(b=>{if(b.tagName==='BUTTON')b.style.fontWeight='normal';});
+  const el=document.getElementById('wb-'+t);if(el)el.style.fontWeight='700';
+}
+
+function wbStart(e){
+  if(wbTool==='sticky'){addWbSticky(e.offsetX,e.offsetY);return;}
+  if(wbTool==='mindmap'){addWbNode(e.offsetX,e.offsetY);return;}
+  wbDrawing=true;wbLastX=e.offsetX;wbLastY=e.offsetY;
+  wbCtx.beginPath();wbCtx.moveTo(wbLastX,wbLastY);
+}
+function wbMove(e){
+  if(!wbDrawing||wbTool!=='pencil')return;
+  wbCtx.lineWidth=wbSize;wbCtx.lineCap='round';wbCtx.strokeStyle=wbColor;
+  wbCtx.lineTo(e.offsetX,e.offsetY);wbCtx.stroke();
+  wbCtx.beginPath();wbCtx.moveTo(e.offsetX,e.offsetY);
+  wbLastX=e.offsetX;wbLastY=e.offsetY;
+}
+function wbEnd(){
+  wbDrawing=false;
+  // Auto-save canvas
+  if(wbCanvas){S.wbData=wbCanvas.toDataURL();save();}
+}
+
+function addWbNode(x,y){
+  const text=prompt('Node text:');if(!text)return;
+  const nodeColors=['#1A56DB','#057A55','#C2410C','#5B21B6','#9B1C1C'];
+  const col=nodeColors[wbNodes.length%nodeColors.length];
+  // Draw connecting line to previous node
+  if(wbNodes.length>0){
+    const prev=wbNodes[wbNodes.length-1];
+    wbCtx.beginPath();wbCtx.strokeStyle='#94A3B8';wbCtx.lineWidth=1.5;wbCtx.setLineDash([4,3]);
+    wbCtx.moveTo(prev.x,prev.y);wbCtx.lineTo(x,y);wbCtx.stroke();
+    wbCtx.setLineDash([]);
+  }
+  // Draw node circle
+  wbCtx.beginPath();wbCtx.arc(x,y,28,0,Math.PI*2);wbCtx.fillStyle=col;wbCtx.fill();
+  wbCtx.fillStyle='#fff';wbCtx.font='bold 11px Inter,sans-serif';wbCtx.textAlign='center';wbCtx.textBaseline='middle';
+  const words=text.split(' ');const line1=words.slice(0,2).join(' ');const line2=words.slice(2).join(' ');
+  wbCtx.fillText(line1,x,line2?y-7:y);if(line2)wbCtx.fillText(line2,x,y+7);
+  wbNodes.push({x,y,text});
+  S.wbData=wbCanvas.toDataURL();save();
+}
+
+function addWbSticky(x,y){
+  const text=prompt('Sticky note text:');if(!text)return;
+  const colors=['#FEF3C7','#DEF7EC','#EBF5FF','#F5F3FF','#FDE8E8'];
+  const col=colors[Math.floor(Math.random()*colors.length)];
+  const id='sticky_'+Date.now();
+  const el=document.createElement('div');
+  el.id=id;el.style.cssText=`position:absolute;left:${x}px;top:${(y/520*100).toFixed(1)}%;width:140px;min-height:80px;background:${col};border:1px solid #E2E8F0;border-radius:6px;padding:10px;font-size:12px;line-height:1.5;cursor:move;box-shadow:2px 2px 6px rgba(0,0,0,0.1);z-index:10;`;
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:10px;color:#94A3B8;">${new Date().toLocaleDateString()}</span><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:12px;">✕</button></div>${text}`;
+  // Make draggable
+  let dx=0,dy=0,sx=0,sy=0;
+  el.onmousedown=ev=>{ev.preventDefault();sx=ev.clientX;sy=ev.clientY;document.onmousemove=em=>{dx=sx-em.clientX;dy=sy-em.clientY;sx=em.clientX;sy=em.clientY;el.style.left=(el.offsetLeft-dx)+'px';el.style.top=(el.offsetTop-dy)+'px';};document.onmouseup=()=>{document.onmousemove=null;document.onmouseup=null;};};
+  document.getElementById('wb-stickies').appendChild(el);
+}
+
+function clearWb(){
+  if(!confirm('Clear the whiteboard?'))return;
+  wbCtx.clearRect(0,0,wbCanvas.width,wbCanvas.height);
+  wbNodes=[];document.getElementById('wb-stickies').innerHTML='';
+  S.wbData=null;save();
+}
+function saveWbImage(){
+  const a=document.createElement('a');a.download='Whiteboard_'+new Date().toISOString().slice(0,10)+'.png';a.href=wbCanvas.toDataURL();a.click();
+}
+
+// ═══ DATE ═══
+document.getElementById('top-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+
+// ═══ INIT ═══
+load();
+</script>
+
+<!-- SUBMITTAL MODAL -->
+<div class="overlay" id="modal-submittal">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title" id="modal-sub-title">Add Submittal</div><button class="btn btn-xs" onclick="closeModal('modal-submittal');editSubIdx=-1;">✕</button></div>
+    <div class="fg"><div><label>Submittal Number</label><input id="sub-number" placeholder="SUB-001"></div><div><label>Revision</label><input id="sub-rev" placeholder="A"></div></div>
+    <div class="ff"><label>Document Title *</label><input id="sub-title" placeholder="e.g. ITP for DC Smoothing Reactor Installation"></div>
+    <div class="fg"><div><label>Discipline</label><input id="sub-discipline" placeholder="e.g. Electrical QC"></div><div><label>Submitted Date</label><input type="date" id="sub-date"></div></div>
+    <div class="fg"><div><label>Status</label><select id="sub-status"><option>Under Review</option><option>Approved</option><option>Rejected</option><option>Resubmit Required</option></select></div><div><label>Response Date</label><input type="date" id="sub-resp-date"></div></div>
+    <div class="ff"><label>Rejection Reason (if rejected)</label><input id="sub-rejection" placeholder="e.g. Missing reference to IEC 62271-102"></div>
+    <div class="ff"><label>Notes</label><textarea id="sub-notes" placeholder="Additional notes..." rows="2"></textarea></div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveSubmittal()">💾 Save</button><button class="btn" onclick="closeModal('modal-submittal');editSubIdx=-1;">Cancel</button></div>
+  </div>
+</div>
+
+<!-- EDIT TASK MODAL -->
+<div class="overlay" id="modal-edit-task">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Edit Task</div><button class="btn btn-xs" onclick="closeModal('modal-edit-task')">✕</button></div>
+    <input type="hidden" id="et-idx">
+    <div class="ff"><label>Task Description</label><input id="et-txt" placeholder="Task description"></div>
+    <div class="fg">
+      <div><label>Due Date</label><input type="date" id="et-date"></div>
+      <div><label>Priority</label><select id="et-pri"><option value="high">🔴 High</option><option value="med">🟡 Medium</option><option value="low">🟢 Low</option></select></div>
+    </div>
+    <div class="ff"><label>Category</label><select id="et-cat"><option>NCR</option><option>RFI</option><option>MIR</option><option>SOR</option><option>Audit</option><option>General</option></select></div>
+    <div class="btn-group"><button class="btn btn-primary" onclick="saveEditTask()">💾 Save</button><button class="btn" onclick="closeModal('modal-edit-task')">Cancel</button></div>
+  </div>
+</div>
+</body>
+</html>
